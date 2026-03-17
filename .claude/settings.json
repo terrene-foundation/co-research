@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "node scripts/hooks/user-prompt-rules-reminder.js"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "node scripts/hooks/validate-research-content.js",
+        "toolNames": ["Edit", "Write"]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node scripts/hooks/session-end.js"
+      }
+    ],
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "node scripts/hooks/session-start.js"
+      }
+    ]
+  }
+}

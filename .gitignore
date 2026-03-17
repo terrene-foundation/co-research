@@ -1,0 +1,7 @@
+.session-notes
+.claude/learning/observations.jsonl
+.claude/learning/instincts.json
+*.swp
+*.swo
+.DS_Store
+node_modules/
