@@ -8,19 +8,57 @@ A template repository implementing **COR** (CO for Research), a structured metho
 
 Based on the [Cognitive Orchestration specification](https://terrene.foundation) (CC BY 4.0, Terrene Foundation).
 
-**Tool-agnostic**: works with any AI coding tool that supports agents, rules, and hooks (Claude Code, Cursor, Windsurf, etc.).
+**Two ways to use COR**: via Claude Code (CLI, full enforcement) or via Claude Desktop Cowork (plugin, broader accessibility).
 
 ## Quick Start
 
-1. Use this template (or clone the repository)
-2. Open `CLAUDE.md` and configure the **Research Domain** section with your field's key papers, debates, schools of thought, and canonical citations
-3. Update the `field-expert` agent (`.claude/agents/research/field-expert.md`) with domain-specific knowledge
-4. Create a workspace for your paper:
-   ```bash
-   cp -r workspaces/_template workspaces/my-paper
-   ```
-5. Add your paper brief to `workspaces/my-paper/briefs/`
-6. Start with `/teach` to build understanding or `/literature` to survey existing work
+### Option A: Claude Code (CLI)
+
+For developers and technical researchers. Full CO enforcement via hooks.
+
+```bash
+git clone https://github.com/terrene-foundation/co-research.git my-research
+cd my-research
+claude
+```
+
+Then type `/start`. COR introduces itself, explains the workflow, and asks about your research project.
+
+**Setup**:
+1. Open `CLAUDE.md` and configure the **Research Domain** section with your field's key papers, debates, and terminology
+2. Update the `field-expert` agent (`.claude/agents/research/field-expert.md`) with domain-specific knowledge
+3. Create a workspace: `cp -r workspaces/_template workspaces/my-paper`
+4. Add your paper brief to `workspaces/my-paper/briefs/`
+
+**Commands**: `/teach`, `/literature`, `/deliberate`, `/craft`, `/write-para`, `/validate-claim`, `/challenge`, `/check-refs`, `/preflight`, `/publish`, `/ws`, `/wrapup`, `/checkpoint`
+
+### Option B: Claude Desktop Cowork (Plugin)
+
+For non-technical researchers. Same methodology, accessible through a desktop interface.
+
+**Step 1**: Clone the template (you need the workspace structure):
+```bash
+git clone https://github.com/terrene-foundation/co-research.git my-research
+```
+
+**Step 2**: Install the COR plugin in Claude Desktop:
+- Open Claude Desktop, switch to Cowork tab
+- Click "Customize" in left sidebar, then "Browse plugins"
+- Install `co-research` (or load from the `plugin/` folder in this repo)
+
+**Step 3**: Open the cloned folder in Cowork and type `/co-research:start`
+
+**Skills**: All commands are available as `/co-research:teach`, `/co-research:literature`, `/co-research:craft`, etc.
+
+**What's different from CLI**: Hooks (automated validation) are advisory in Cowork, not enforced. Session memory requires manual `/co-research:wrapup`. All other functionality (skills, agents, co-authorship modes) works identically.
+
+### What both paths share
+
+- Same 6 research agents + 2 management agents
+- Same 13 skills implementing the 5-phase workflow
+- Same two co-authorship modes (`craft` and `write-para`)
+- Same workspace structure, journal system, and deliberation records
+- Same rules for research integrity, writing style, and publication quality
 
 ## The Five Layers
 
