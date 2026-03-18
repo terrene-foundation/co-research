@@ -1,5 +1,7 @@
 # COR Plugin -- CO for Research
 
+> **New here?** Type `/co-research:start` to begin.
+
 This plugin implements **COR** (Cognitive Orchestration for Research): structured human-AI co-authorship for academic publications. COR applies the five-layer CO architecture to research writing: maintaining integrity, preventing citation fabrication, preserving authentic voice, and producing work that withstands peer review.
 
 ## Absolute Directives

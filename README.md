@@ -34,31 +34,71 @@ Then type `/start`. COR introduces itself, explains the workflow, and asks about
 
 ### Option B: Claude Desktop Cowork (Plugin)
 
-For non-technical researchers. Same methodology, accessible through a desktop interface.
+For researchers who prefer a desktop interface. No coding experience needed.
 
-**Step 1**: Clone the template (you need the workspace structure):
+**What you need before starting:**
+- Claude Desktop installed (version with Cowork support; your institution may provide this)
+- A Claude Pro, Max, or Team subscription
+- About 10 minutes for one-time setup
+
+**Step 1: Download the research workspace**
+
+You need a copy of the COR workspace files on your computer. Choose one method:
+
+**Method A (recommended for non-technical users):** Go to [github.com/terrene-foundation/co-research](https://github.com/terrene-foundation/co-research). Click the green **"Code"** button, then click **"Download ZIP"**. Unzip the downloaded file. Rename the folder to `my-research` and move it to your Documents folder.
+
+**Method B (if you know git):**
 ```bash
 git clone https://github.com/terrene-foundation/co-research.git my-research
 ```
 
-**Step 2**: Install the COR plugin in Claude Desktop:
-- Open Claude Desktop, switch to Cowork tab
-- Click "Customize" in left sidebar, then "Browse plugins"
-- Install `co-research` (or load from the `plugin/` folder in this repo)
+**Step 2: Install the COR plugin in Claude Desktop**
 
-**Step 3**: Open the cloned folder in Cowork and type `/co-research:start`
+1. Open Claude Desktop
+2. Switch to the **"Cowork"** tab (at the top of the window)
+3. In the left sidebar, click **"Customize"**
+4. Click **"Browse plugins"**
+5. Search for `co-research` and click **"Install"**
 
-**Skills**: All commands are available as `/co-research:teach`, `/co-research:literature`, `/co-research:craft`, etc.
+If `co-research` does not appear in the plugin browser, install it manually: click **"Load from folder"** and navigate to the `plugin` folder inside the `my-research` folder you downloaded in Step 1.
 
-**What's different from CLI**: Hooks (automated validation) are advisory in Cowork, not enforced. Session memory requires manual `/co-research:wrapup`. All other functionality (skills, agents, co-authorship modes) works identically.
+**Step 3: Open your workspace**
+
+1. In the Cowork tab, click **"Open folder"** (or drag your `my-research` folder into the Cowork window)
+2. Type `/co-research:start` in the chat
+3. COR will introduce itself, explain the five-phase workflow, and ask about your research project
+
+**Step 4 (optional): Configure for your field**
+
+Open the `CLAUDE.md` file in your `my-research` folder with any text editor (TextEdit on Mac, Notepad on Windows). Find the **"Research Domain"** section near the bottom. Replace the example content with your field's key papers, debates, and terminology. This helps COR give field-specific guidance.
+
+**Troubleshooting:**
+- **"Plugin not found" in the browser**: Use the manual "Load from folder" method in Step 2
+- **The folder won't open in Cowork**: Make sure you are in the Cowork tab, not the regular Chat tab
+- **Commands don't work**: Make sure you type the full skill name with the plugin prefix, e.g., `/co-research:teach` (not just `/teach`)
 
 ### What both paths share
 
 - Same 6 research agents + 2 management agents
-- Same 13 skills implementing the 5-phase workflow
+- Same 14 skills implementing the 5-phase workflow
 - Same two co-authorship modes (`craft` and `write-para`)
 - Same workspace structure, journal system, and deliberation records
 - Same rules for research integrity, writing style, and publication quality
+
+### Limitations of the Cowork plugin (compared to CLI)
+
+The Cowork plugin provides the same methodology and agents as the CLI version, with these differences:
+
+| Feature | CLI (Claude Code) | Cowork Plugin |
+|---------|-------------------|---------------|
+| **Guardrail enforcement** | Hooks automatically block fabricated citations, missing disclaimers, and AI-signature words before they reach your draft | Rules are advisory. COR follows them but cannot programmatically enforce them. You should still run `/co-research:validate-claim` and `/co-research:check-refs` manually. |
+| **Session memory** | `.session-notes` is read automatically on the next session start | You must run `/co-research:wrapup` before ending a session. The next session does not auto-read the notes; tell COR to "read .session-notes" or run `/co-research:start` which checks for them. |
+| **Workspace detection** | Hooks automatically detect the active workspace | COR infers the workspace from the folder you open. If you have multiple workspaces, tell COR which one to use. |
+| **Skill names** | `/teach`, `/literature`, `/craft`, etc. | `/co-research:teach`, `/co-research:literature`, `/co-research:craft`, etc. (plugin prefix required) |
+| **Agent permissions** | Agents can enforce permission modes and use hooks | Plugin agents cannot use hooks or override permission settings (Cowork security restriction). |
+| **File system access** | Full access | Access limited to the folder you opened in Cowork. |
+
+These limitations do not affect the core methodology. The five-phase workflow, co-authorship modes, agents, and journal system all work identically.
 
 ## The Five Layers
 
