@@ -16,6 +16,7 @@ This plugin implements **COR** (Cognitive Orchestration for Research): structure
 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
+| `/co-research:start` | -- | New user orientation; explains workflow, checks workspace, asks about the project |
 | `/co-research:teach` | 01 | Research tutor mode; explains concepts with context and debates |
 | `/co-research:literature` | 01 | Systematic literature search and structured assessment |
 | `/co-research:deliberate` | 02 | Record a structural decision about the paper |
