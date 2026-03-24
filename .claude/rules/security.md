@@ -29,9 +29,20 @@ Since arXiv and SSRN content is permanent and cannot be removed:
 
 MUST NOT commit .env files to version control.
 
+**Required**:
+
+- .env in .gitignore
+- .env.example for templates (no real values)
+
 ### 4. No Hardcoded Secrets in Scripts
 
 Hook scripts MUST NOT contain hardcoded credentials.
+
+## MUST NOT Rules
+
+### 1. No Unredacted PII
+
+MUST NOT include personal data (passport numbers, personal addresses) in documents without explicit consent and legitimate purpose.
 
 ## Research-Specific Security
 
@@ -45,3 +56,10 @@ Hook scripts MUST NOT contain hardcoded credentials.
 
 - Co-author agreements and contribution records may contain sensitive details; review before committing
 - IRB (Institutional Review Board) documents containing participant information must never be committed
+
+## Exceptions
+
+Security exceptions require:
+
+1. Written justification
+2. Documentation in the commit message

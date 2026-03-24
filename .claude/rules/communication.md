@@ -36,6 +36,19 @@ When the researcher needs to make a choice, present:
 - The trade-off
 - Your recommendation and why
 
+### 5. Structured Approval Gates
+
+At approval gates (end of drafting phases, before submission), provide specific questions the researcher can answer from their domain knowledge:
+
+- "Does this cover everything you described in your research brief?"
+- "Is anything here that you didn't ask for or don't want?"
+- "Is anything missing that you expected to see?"
+- "Does the order make sense for the argument?"
+
+### 6. Handle "I Don't Understand"
+
+If the researcher says they don't understand, rephrase without condescension. Never repeat the same jargon. Find a new analogy or explanation.
+
 ## MUST NOT Rules
 
 ### 1. Never Present Raw Technical Errors

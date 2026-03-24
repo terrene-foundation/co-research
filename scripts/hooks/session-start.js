@@ -1,62 +1,190 @@
-const fs = require('fs');
-const path = require('path');
-const { findActiveWorkspace, loadWorkspaceContext } = require('./lib/workspace-utils');
+#!/usr/bin/env node
+/**
+ * Hook: session-start
+ * Event: SessionStart
+ * Purpose: Initialize session, detect workspace state, output configuration.
+ *
+ * COR (CO for Research) workspace session initialization.
+ *
+ * Exit Codes:
+ *   0 = success (continue)
+ *   2 = blocking error (stop tool execution)
+ *   other = non-blocking error (warn and continue)
+ */
 
-const messages = [];
+const fs = require("fs");
+const path = require("path");
+const {
+  parseEnvFile,
+  discoverModelsAndKeys,
+  ensureEnvFile,
+  buildCompactSummary,
+} = require("./lib/env-utils");
+const {
+  resolveLearningDir,
+  ensureLearningDir,
+  logObservation: logLearningObservation,
+} = require("./lib/learning-utils");
+const {
+  detectActiveWorkspace,
+  derivePhase,
+  getTodoProgress,
+  getSessionNotes,
+} = require("./lib/workspace-utils");
 
-// Check for session notes
-const sessionNotesPath = path.join(process.cwd(), '.session-notes');
-if (fs.existsSync(sessionNotesPath)) {
+let input = "";
+process.stdin.setEncoding("utf8");
+process.stdin.on("data", (chunk) => (input += chunk));
+process.stdin.on("end", () => {
   try {
-    const notes = fs.readFileSync(sessionNotesPath, 'utf8');
-    const preview = notes.split('\n').slice(0, 20).join('\n');
-    messages.push(`Previous session notes found:\n${preview}`);
-    if (notes.split('\n').length > 20) {
-      messages.push('(Session notes truncated; read .session-notes for full content)');
+    const data = JSON.parse(input);
+    initializeSession(data);
+    console.log(JSON.stringify({ continue: true }));
+    process.exit(0);
+  } catch (error) {
+    console.error(`[HOOK ERROR] ${error.message}`);
+    console.log(JSON.stringify({ continue: true }));
+    process.exit(1);
+  }
+});
+
+function initializeSession(data) {
+  const session_id = (data.session_id || "unknown").replace(
+    /[^a-zA-Z0-9_-]/g,
+    "_",
+  );
+  const cwd = data.cwd || process.cwd();
+  const homeDir = process.env.HOME || process.env.USERPROFILE;
+  const sessionDir = path.join(homeDir, ".claude", "sessions");
+  const learningDir = resolveLearningDir(cwd);
+
+  // Ensure directories exist
+  [sessionDir].forEach((dir) => {
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch {}
+  });
+  ensureLearningDir(cwd);
+
+  // ── .env provision ────────────────────────────────────────────────────
+  const envResult = ensureEnvFile(cwd);
+  if (envResult.created) {
+    console.error(
+      `[ENV] Created .env from ${envResult.source}. Please fill in your API keys.`,
+    );
+  }
+
+  // ── Parse .env ────────────────────────────────────────────────────────
+  const envPath = path.join(cwd, ".env");
+  const envExists = fs.existsSync(envPath);
+  let env = {};
+  let discovery = { models: {}, keys: {}, validations: [] };
+
+  if (envExists) {
+    env = parseEnvFile(envPath);
+    discovery = discoverModelsAndKeys(env);
+  }
+
+  // ── Detect project type ─────────────────────────────────────────────
+  const projectType = detectProjectType(cwd);
+
+  // ── Log observation ───────────────────────────────────────────────────
+  try {
+    const observationsFile = path.join(learningDir, "observations.jsonl");
+    fs.appendFileSync(
+      observationsFile,
+      JSON.stringify({
+        type: "session_start",
+        session_id,
+        cwd,
+        timestamp: new Date().toISOString(),
+        envExists,
+        projectType,
+        models: discovery.models,
+        keyCount: Object.keys(discovery.keys).length,
+        validationFailures: discovery.validations
+          .filter((v) => v.status === "MISSING_KEY")
+          .map((v) => v.message),
+      }) + "\n",
+    );
+  } catch {}
+
+  // ── Load previous session ─────────────────────────────────────────────
+  try {
+    const sessionFile = path.join(sessionDir, `${session_id}.json`);
+    const lastSessionFile = path.join(sessionDir, "last-session.json");
+    if (fs.existsSync(sessionFile)) {
+      /* loaded */
+    } else if (fs.existsSync(lastSessionFile)) {
+      /* loaded */
     }
-  } catch (e) {
-    // Ignore read errors
+  } catch {}
+
+  // ── Output workspace status (human-facing, stderr only) ──────────────
+  try {
+    const ws = detectActiveWorkspace(cwd);
+    if (ws) {
+      const phase = derivePhase(ws.path, cwd);
+      const todos = getTodoProgress(ws.path);
+      const notes = getSessionNotes(ws.path);
+      console.error(
+        `[WORKSPACE] ${ws.name} | Phase: ${phase} | Todos: ${todos.active} active / ${todos.completed} done`,
+      );
+      if (notes) {
+        const staleTag = notes.stale ? " (stale)" : "";
+        console.error(`[WORKSPACE] Session notes${staleTag}: ${notes.age}`);
+      }
+    }
+  } catch {}
+
+  // ── Output model/key summary ──────────────────────────────────────────
+  if (envExists) {
+    const summary = buildCompactSummary(env, discovery);
+    console.error(`[ENV] ${summary}`);
+
+    // Detail each model-key validation
+    for (const v of discovery.validations) {
+      const icon = v.status === "ok" ? "+" : "x";
+      console.error(`[ENV]   ${icon} ${v.message}`);
+    }
+
+    // Prominent warnings for missing keys
+    const failures = discovery.validations.filter(
+      (v) => v.status === "MISSING_KEY",
+    );
+    if (failures.length > 0) {
+      console.error(
+        `[ENV] WARNING: ${failures.length} model(s) configured without API keys!`,
+      );
+      console.error(
+        "[ENV] LLM operations WILL FAIL. Add missing keys to .env.",
+      );
+    }
+  } else {
+    console.error(
+      "[ENV] No .env file found. API keys and models not configured.",
+    );
   }
 }
 
-// Check active workspace
-const workspace = findActiveWorkspace();
-if (workspace) {
-  const context = loadWorkspaceContext(workspace);
-  messages.push(`Active workspace: ${workspace}`);
-  if (context.briefs.length > 0) {
-    messages.push(`Paper briefs: ${context.briefs.map(b => path.basename(b)).join(', ')}`);
-  }
+/**
+ * Detect the project type based on filesystem contents.
+ * This is a research workspace, not an SDK project.
+ */
+function detectProjectType(cwd) {
+  try {
+    const hasWorkspaces = fs.existsSync(path.join(cwd, "workspaces"));
+    const hasJournal = fs.existsSync(path.join(cwd, "workspaces")) &&
+      fs.readdirSync(path.join(cwd, "workspaces")).some((d) => {
+        try {
+          return fs.existsSync(path.join(cwd, "workspaces", d, "journal"));
+        } catch { return false; }
+      });
 
-  // Check journal entry count
-  const journalDir = path.join(process.cwd(), 'workspaces', workspace, 'journal');
-  if (fs.existsSync(journalDir)) {
-    const entries = fs.readdirSync(journalDir).filter(f => f.endsWith('.md') && f !== 'README.md');
-    if (entries.length > 0) {
-      messages.push(`Journal: ${entries.length} entries`);
-    }
+    if (hasWorkspaces && hasJournal) return "research-workspace";
+    if (hasWorkspaces) return "research-workspace";
+    return "research";
+  } catch {
+    return "unknown";
   }
-
-  // Check active todos
-  const todosDir = path.join(process.cwd(), 'workspaces', workspace, 'todos', 'active');
-  if (fs.existsSync(todosDir)) {
-    const todos = fs.readdirSync(todosDir).filter(f => f.endsWith('.md') && f !== 'README.md');
-    if (todos.length > 0) {
-      messages.push(`Active todos: ${todos.length}`);
-    }
-  }
-} else {
-  messages.push('No active workspace found. Create one with: cp -r workspaces/_template workspaces/my-paper');
-}
-
-if (messages.length > 0) {
-  console.log(JSON.stringify({
-    result: "continue",
-    message: `[COR Session Start]\n${messages.join('\n')}`
-  }));
-} else {
-  console.log(JSON.stringify({
-    result: "continue",
-    message: "[COR Session Start] Welcome. No workspace or session notes found. Create a workspace to begin."
-  }));
 }

@@ -26,7 +26,7 @@ MUST NOT use "first", "only", "unique", "novel" without "to our knowledge" or "a
 
 In co-writing mode, every draft paragraph MUST include inline annotations explaining key choices. Bare drafts without rationale are not acceptable. The author must understand why every sentence is there.
 
-### 6. Disclose AI Assistance (Principle 8)
+### 6. Disclose AI Assistance
 
 MUST follow venue requirements for disclosing AI assistance in the research process. COR's journal and deliberation records provide evidence of the human's intellectual contribution. Venues increasingly require explicit disclosure; COR supports this with a verifiable audit trail.
 

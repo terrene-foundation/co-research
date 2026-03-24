@@ -32,54 +32,58 @@ When you discover a missing analysis, literature note, decision record, or journ
 
 ## Rules Index
 
-| Concern | Rule File | Scope |
-|---------|-----------|-------|
-| Research integrity | `rules/research-integrity.md` | Global |
+| Concern                | Rule File                         | Scope  |
+| ---------------------- | --------------------------------- | ------ |
+| Research integrity     | `rules/research-integrity.md`     | Global |
 | Academic writing style | `rules/academic-writing-style.md` | Global |
-| Deliberation records | `rules/deliberation-records.md` | Global |
-| Publication claims | `rules/publication-claims.md` | Scoped |
-| Publication quality | `rules/publication-quality.md` | Scoped |
-| Communication style | `rules/communication.md` | Global |
-| Git workflow | `rules/git.md` | Global |
-| Security | `rules/security.md` | Global |
+| Research teaching      | `rules/research-teaching.md`      | Global |
+| Deliberation records   | `rules/deliberation-records.md`   | Global |
+| Publication claims     | `rules/publication-claims.md`     | Scoped |
+| Publication quality    | `rules/publication-quality.md`    | Scoped |
+| arXiv submission       | `rules/arxiv-submission.md`       | Scoped |
+| No stubs/placeholders  | `rules/no-stubs.md`               | Global |
+| Agent orchestration    | `rules/agents.md`                 | Global |
+| Communication style    | `rules/communication.md`          | Global |
+| Git workflow           | `rules/git.md`                    | Global |
+| Security               | `rules/security.md`               | Global |
 
 ## Agents
 
 ### Research Co-Authorship (`agents/research/`)
 
-| Agent | Purpose |
-|-------|---------|
-| **literature-researcher** | Systematic literature discovery, paper assessment, citation verification |
-| **field-expert** | Domain knowledge tutor, historical context, debates, connections to your argument |
-| **claims-verifier** | Verifies claims against cited sources (VERIFIED / OVERCLAIMED / FABRICATED) |
-| **argument-critic** | Adversarial reviewer simulation; never says "this is fine" |
-| **writing-partner** | Paragraph-level co-writing with margin notes and deliberation |
-| **cross-reference-auditor** | Cross-paper citation integrity, scope boundary enforcement |
+| Agent                       | Purpose                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| **literature-researcher**   | Systematic literature discovery, paper assessment, citation verification          |
+| **field-expert**            | Domain knowledge tutor, historical context, debates, connections to your argument |
+| **claims-verifier**         | Verifies claims against cited sources (VERIFIED / OVERCLAIMED / FABRICATED)       |
+| **argument-critic**         | Adversarial reviewer simulation; never says "this is fine"                        |
+| **writing-partner**         | Paragraph-level co-writing with margin notes and deliberation                     |
+| **cross-reference-auditor** | Cross-paper citation integrity, scope boundary enforcement                        |
 
 ### Management (`agents/management/`)
 
-| Agent | Purpose |
-|-------|---------|
-| **todo-manager** | Research project task tracking |
-| **gh-manager** | GitHub issue management for research milestones |
+| Agent            | Purpose                                         |
+| ---------------- | ----------------------------------------------- |
+| **todo-manager** | Research project task tracking                  |
+| **gh-manager**   | GitHub issue management for research milestones |
 
 ## Commands
 
-| Command | Phase | Purpose |
-|---------|-------|---------|
-| `/teach` | 01 | Research tutor mode; explains concepts with context and debates |
-| `/literature` | 01 | Systematic literature search and structured assessment |
-| `/deliberate` | 02 | Record a structural decision about the paper |
-| `/craft` | 03 | Author writes, AI teaches and critiques (defense prep, originality) |
-| `/write-para` | 03 | AI drafts paragraph with margin notes; author approves |
-| `/validate-claim` | 04 | Verify claims against cited sources |
-| `/challenge` | 04 | Hostile reviewer simulation |
-| `/check-refs` | 05 | Cross-reference and citation audit |
-| `/preflight` | 05 | Pre-submission deep validation |
-| `/publish` | 05 | Prepare for venue-specific submission |
-| `/ws` | -- | Workspace status dashboard |
-| `/wrapup` | -- | Save session notes for continuity |
-| `/checkpoint` | -- | Review learning progress and journal entries |
+| Command           | Phase | Purpose                                                             |
+| ----------------- | ----- | ------------------------------------------------------------------- |
+| `/teach`          | 01    | Research tutor mode; explains concepts with context and debates     |
+| `/literature`     | 01    | Systematic literature search and structured assessment              |
+| `/deliberate`     | 02    | Record a structural decision about the paper                        |
+| `/craft`          | 03    | Author writes, AI teaches and critiques (defense prep, originality) |
+| `/write-para`     | 03    | AI drafts paragraph with margin notes; author approves              |
+| `/validate-claim` | 04    | Verify claims against cited sources                                 |
+| `/challenge`      | 04    | Hostile reviewer simulation                                         |
+| `/check-refs`     | 05    | Cross-reference and citation audit                                  |
+| `/preflight`      | 05    | Pre-submission deep validation                                      |
+| `/publish`        | 05    | Prepare for venue-specific submission                               |
+| `/ws`             | --    | Workspace status dashboard                                          |
+| `/wrapup`         | --    | Save session notes for continuity                                   |
+| `/checkpoint`     | --    | Review learning progress and journal entries                        |
 
 ## COR Workflow
 
@@ -113,13 +117,17 @@ See `workspaces/CLAUDE.md` for details.
 Example structure:
 
 ### Foundational Papers
+
 - [Author (Year)] -- [Key contribution and why it matters]
 
 ### Active Debates
+
 - [Debate topic]: [School A] vs [School B] -- [Why this matters for your work]
 
 ### Key Journals and Conferences
+
 - [Venue name] -- [Scope and relevance]
 
 ### Standard Terminology
+
 - [Term]: [Definition as used in your field]

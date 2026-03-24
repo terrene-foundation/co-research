@@ -4,9 +4,9 @@
 
 These rules apply when writing content for academic publications or any draft in a workspace's `03-drafts/` directory.
 
-## Connection to CO Principle 8
+## Connection to Research Co-Authorship
 
-CO Principle 8 requires that AI-assisted work be disclosed transparently. The writing style rules below serve two purposes: (1) producing better academic prose that reads naturally, and (2) mitigating detection bias from statistical tools that disproportionately flag non-native English speakers and formulaic academic writing.
+The writing style rules below serve two purposes: (1) producing better academic prose that reads naturally, and (2) mitigating detection bias from statistical tools that disproportionately flag non-native English speakers and formulaic academic writing.
 
 These rules are about authentic voice preservation, not concealment. COR practitioners disclose AI assistance per venue requirements.
 
@@ -77,7 +77,7 @@ MUST use first person ("I argue", "I ground", "I analyze") for the author's own 
 
 ### 8. Anchor Terms at First Use
 
-Key concepts MUST be introduced with a memorable label at first use and bolded: **human-in-the-loop**, **constraint theater**, **functional agency**. Once introduced, the label can be used without re-explanation.
+Key concepts MUST be introduced with a memorable label at first use and bolded: **human-in-the-loop**, **functional agency**. Once introduced, the label can be used without re-explanation.
 
 ### 9. Domain-Specific Vocabulary Over Generic
 
@@ -122,28 +122,50 @@ MUST NOT maintain the same confidence level throughout. Modulate confidence expl
 
 MUST NOT present "both sides" when one interpretation is clearly stronger. If the evidence favors one position, say so.
 
+### 17. No "As X, Y Transforms" Thesis Patterns
+
+MUST NOT use the thesis pattern "As X, Y transforms..." which is a strong AI writing signature.
+
+**Wrong**: "As managers shift their delegation, the governance problem transforms..."
+**Right**: "The governance problem is no longer about monitoring effort. It is about screening judgment." Lead with conclusion, then explain why.
+
+### 18. No Smooth Literature Summarization
+
+Break up literature reviews: direct quotation + your reaction, blunt assessments ("This misses the point."), parenthetical noting what the author did NOT address, varied citation integration (author-prominent, information-prominent, integrated).
+
+### 19. No Setup-Example-Citation-Conclusion Arc
+
+Break the four-beat arc. Start with the example, or the citation, or embed conclusion mid-paragraph. Do not let the reader predict what comes next.
+
+### 20. No "However, This Mechanism" Logical Pivots
+
+MUST NOT use "However, this mechanism..." as a logical pivot between paragraphs.
+
+**Wrong**: "However, this mechanism breaks down..."
+**Right**: "The mechanism breaks. Autonomous systems do not throttle effort based on authority allocation."
+
 ## SHOULD Rules
 
-### 17. Include Specific Numbers and Dates
+### 21. Include Specific Numbers and Dates
 
 SHOULD include specific numbers, dates, and concrete details. Use numerals for large figures and percentages: "127 million" not "one hundred twenty-seven million", "93%" not "ninety-three percent."
 
-### 18. Use Semicolons and Colons
+### 22. Use Semicolons and Colons
 
 SHOULD use semicolons and colons where grammatically appropriate. AI text underuses semicolons relative to human academic writing.
 
-### 19. Use Parenthetical Asides
+### 23. Use Parenthetical Asides
 
 SHOULD occasionally use parenthetical asides (like this one) for minor qualifications.
 
-### 20. Reference Specific Page Numbers
+### 24. Reference Specific Page Numbers
 
 SHOULD cite specific page numbers or proposition numbers when referencing prior work.
 
-### 21. Occasional Rhetorical Questions
+### 25. Occasional Rhetorical Questions
 
 SHOULD use rhetorical questions sparingly. Humans use these in academic writing; AI avoids them.
 
-## The Co-Authorship Principle (Principle 8)
+## The Co-Authorship Principle
 
 This work is genuinely co-authored. The human makes every structural decision, approves every paragraph, and directs the argument. The AI researches, drafts, explains, and critiques. The rules above ensure the output reflects the human direction that produced it. COR practitioners disclose AI assistance honestly, supported by the journal and deliberation records that document the human's intellectual contribution.

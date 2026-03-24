@@ -40,7 +40,7 @@ Every publication MUST include:
 - Version number and date
 - Author attribution with affiliation
 - Disclosure of author's relationship to the work
-- AI use disclosure per venue requirements (Principle 8)
+- AI use disclosure per venue requirements
 - License statement where applicable
 
 ### 5. Terminology Consistency

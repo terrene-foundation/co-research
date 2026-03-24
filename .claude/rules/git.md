@@ -11,19 +11,31 @@ These rules apply to all git operations in this repository.
 Commit messages MUST follow conventional commits format.
 
 **Format**:
+
 ```
 type(scope): description
 
 [optional body]
+
+[optional footer]
 ```
 
-**Types**: feat, fix, docs, style, refactor, test, chore
+**Types**:
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation
+- `style`: Formatting, no code change
+- `refactor`: Code restructure
+- `test`: Adding tests
+- `chore`: Maintenance
 
 **Examples**:
+
 ```
 docs(literature): add assessment of Smith (2024) on institutional design
 feat(draft): complete methodology section first draft
-fix(refs): correct citation suffix for Hong 2026a/b
+fix(refs): correct citation suffix for Jones 2024a/b
 chore(workspace): set up new paper workspace
 ```
 
@@ -34,11 +46,20 @@ Feature branches MUST follow naming convention.
 **Format**: `type/description`
 
 **Examples**:
+
 - `docs/literature-review`
 - `feat/methodology-section`
 - `fix/citation-audit`
 
-### 3. Atomic Commits
+### 3. PR Description
+
+Pull requests MUST include:
+
+- Summary of changes (what and why)
+- Test plan (how to verify)
+- Related issues (links)
+
+### 4. Atomic Commits
 
 Each commit MUST be self-contained.
 
@@ -46,6 +67,7 @@ Each commit MUST be self-contained.
 - Each commit should be coherent (a complete literature note, a full section draft, etc.)
 
 **Incorrect**:
+
 ```
 "WIP"
 "fix stuff"
@@ -61,3 +83,21 @@ MUST NOT commit sensitive information (API keys, passwords, personal contact det
 ### 2. No Large Binaries
 
 MUST NOT commit large binary files (PDFs over 10MB, dataset files). Use Git LFS or external storage.
+
+### 3. No Force Push to Main
+
+MUST NOT force push to main/master.
+
+## Branching Strategy
+
+### Main
+
+- Always deployable
+- Protected branch
+- Requires PR with reviews
+
+### Feature Branches
+
+- Branch from main
+- PR back to main
+- Delete after merge
