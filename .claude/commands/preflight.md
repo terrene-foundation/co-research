@@ -1,3 +1,8 @@
+---
+name: preflight
+description: "Pre-submission deep validation of a publication document."
+---
+
 # /preflight — Publication Pre-Flight Check
 
 Run comprehensive pre-submission validation on a publication document.
