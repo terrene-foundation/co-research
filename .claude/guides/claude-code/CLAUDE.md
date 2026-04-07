@@ -43,7 +43,7 @@ This means:
 
 **Practical Impact**: When you ask Claude to work with DataFlow, it doesn't try to figure out database operations from first principles. It uses the `dataflow-specialist` agent and the `02-dataflow` skill which contain proven patterns.
 
-### Philosophy 2: Quality is Non-Negotiable
+### Philosophy 2: Quality is Important
 
 The setup enforces quality at multiple levels:
 
@@ -75,8 +75,8 @@ This is encoded in:
 The setup learns from usage:
 
 - Observations are logged during sessions
-- Patterns are extracted into instincts
-- High-confidence instincts evolve into skills
+- Patterns are aggregated into a learning digest
+- The `/codify` command processes the digest into skills and rules
 - The system gets better over time
 
 > "Every session makes the next session better."
@@ -119,7 +119,7 @@ Think of Claude Code as a **highly capable junior developer** with access to a *
 │  │  1. Use DataFlow (skill 02-dataflow)            │       │
 │  │  2. Consult dataflow-specialist (agent)         │       │
 │  │  3. Generate CRUD nodes                         │       │
-│  │  4. Write tests (real infrastructure preferred)             │       │
+│  │  4. Write tests (real infrastructure recommended)             │       │
 │  │  5. Deploy via Nexus (skill 03-nexus)           │       │
 │  └─────────────────────────────────────────────────┘       │
 │                                                              │
@@ -169,7 +169,7 @@ Think of Claude Code as a **highly capable junior developer** with access to a *
 ```
 .claude/
 ├── agents/              # 30 specialized sub-agents
-│   ├── deep-analyst.md
+│   ├── analyst.md
 │   ├── dataflow-specialist.md
 │   ├── testing-specialist.md
 │   └── ... (27 more)
@@ -187,13 +187,12 @@ Think of Claude Code as a **highly capable junior developer** with access to a *
 │   ├── CLAUDE.md       # This file
 │   └── 01-*.md         # Sequential guides
 │
-├── rules/               # 9 mandatory rule files
+├── rules/               # 8 mandatory rule files
 │   ├── agents.md       # Agent orchestration rules
 │   ├── e2e-god-mode.md # E2E testing requirements
 │   ├── env-models.md   # API keys & model names
 │   ├── git.md          # Git workflow rules
-│   ├── learned-instincts.md # Auto-generated instincts
-│   ├── no-stubs.md     # No stubs/TODOs/placeholders
+│   ├── zero-tolerance.md     # No stubs/TODOs/placeholders
 │   ├── patterns.md     # Kailash pattern rules
 │   ├── security.md     # Security rules
 │   └── testing.md      # Testing policies (real infrastructure recommended)
@@ -219,10 +218,9 @@ scripts/
 │   ├── validate-skills.js
 │   └── ... (3 more)
 │
-├── learning/            # 4 learning system scripts
+├── learning/            # 2 learning system scripts
 │   ├── observation-logger.js
-│   ├── instinct-processor.js
-│   └── ... (2 more)
+│   └── digest-builder.js
 │
 └── plugin/              # Distribution scripts
     └── build-plugin.js
@@ -266,12 +264,12 @@ User: "Create a User model with DataFlow"
 
 5. CLAUDE WRITES TESTS
    └── RULE APPLIED: testing.md
-   └── real infrastructure recommended in Tier 2-3 tests
+   └── Real infrastructure recommended in Tier 2-3 tests
    └── Uses real SQLite database
 
 6. CLAUDE OFFERS TO COMMIT
    └── RULE APPLIED: agents.md
-   └── SHOULD delegate to security-reviewer
+   └── security review recommended
    └── MUST pass security audit before commit
 ```
 
@@ -311,16 +309,15 @@ User: "Run rm -rf /"
 
 Claude automatically selects agents based on task type. For reference:
 
-| Task Type              | Primary Agent           | Secondary Agents           |
-| ---------------------- | ----------------------- | -------------------------- |
-| Database operations    | `dataflow-specialist`   | `testing-specialist`       |
-| API deployment         | `nexus-specialist`      | `deployment-specialist`    |
-| AI/ML features         | `kaizen-specialist`     | `pattern-expert`           |
-| Complex planning       | `deep-analyst`          | `requirements-analyst`     |
-| Code review            | `intermediate-reviewer` | `gold-standards-validator` |
-| Security audit         | `security-reviewer`     | -                          |
-| Test writing           | `tdd-implementer`       | `testing-specialist`       |
-| Pattern implementation | `pattern-expert`        | `sdk-navigator`            |
+| Task Type           | Primary Agent         | Secondary Agents           |
+| ------------------- | --------------------- | -------------------------- |
+| Database operations | `dataflow-specialist` | `testing-specialist`       |
+| API deployment      | `nexus-specialist`    | `release-specialist`       |
+| AI/ML features      | `kaizen-specialist`   | `pattern-expert`           |
+| Complex planning    | `analyst`             | `analyst`                  |
+| Code review         | `reviewer`            | `gold-standards-validator` |
+| Security audit      | `security-reviewer`   | -                          |
+| Test writing        | `tdd-implementer`     | `testing-specialist`       |
 
 ### Instructing Claude Effectively
 
@@ -371,7 +368,7 @@ Claude follows this pattern for complex tasks:
    └── Validate with hooks
 
 4. REVIEW
-   └── Delegate to intermediate-reviewer
+   └── Delegate to reviewer
    └── Address findings
    └── Iterate if needed
 
@@ -429,32 +426,32 @@ You don't need to specify which agent to use. Just describe the task:
 ### Anti-Pattern 1: Bypassing Hooks
 
 **Don't**: Try to disable or work around hooks
-**Why**: Hooks enforce quality that prevents bugs
+**Why:** Hooks enforce quality that prevents bugs
 
 ### Anti-Pattern 2: Ignoring Agent Recommendations
 
-**Don't**: Dismiss intermediate-reviewer findings without addressing
-**Why**: Code review catches issues you'll regret later
+**Don't**: Dismiss reviewer findings without addressing
+**Why:** Code review catches issues you'll regret later
 
 ### Anti-Pattern 3: Rushing Past Planning
 
 **Don't**: "Just write the code, skip the planning"
-**Why**: Planning prevents rework and catches design issues
+**Why:** Planning prevents rework and catches design issues
 
 ### Anti-Pattern 4: Using Mocks in Integration Tests
 
 **Don't**: "Mock the database for this integration test"
-**Why**: Mocks hide real issues; the rule system will flag this
+**Why:** Mocks hide real issues; the rule system will flag this
 
 ### Anti-Pattern 5: Relative Imports
 
 **Don't**: `from ..workflow import builder`
-**Why**: Absolute imports are required; hooks will catch this
+**Why:** Absolute imports are required; hooks will catch this
 
 ### Anti-Pattern 6: Skipping Security Review
 
 **Don't**: "Commit without security review"
-**Why**: Strongly recommended; prevents security vulnerabilities
+**Why:** Strongly recommended; prevents security vulnerabilities
 
 ---
 
@@ -476,24 +473,24 @@ You don't need to specify which agent to use. Just describe the task:
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   INSTINCT PROCESSING                        │
+│                   DIGEST BUILDING                            │
 │                                                              │
-│   Observations → Pattern Analysis → Instinct Formation       │
+│   Observations → Aggregation → Learning Digest               │
 │                                                              │
 │   Example:                                                   │
 │   50 DataFlow observations → 90% use @db.model               │
-│   → Instinct: "Prefer @db.model for DataFlow models"         │
+│   → Digest: "Prefer @db.model for DataFlow models"           │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   EVOLUTION                                  │
+│                   CODIFICATION                               │
 │                                                              │
-│   High-confidence Instincts → New Skills/Commands            │
+│   /codify processes digest → New Skills/Rules                │
 │                                                              │
 │   Example:                                                   │
-│   Instinct (95% confidence) → New skill: "dataflow-models"   │
+│   High-frequency pattern → New skill: "dataflow-models"      │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -502,8 +499,7 @@ You don't need to specify which agent to use. Just describe the task:
 
 ```bash
 /learn           # Log an observation manually
-/evolve          # Process instincts into skills
-/checkpoint      # Save current learning state
+/codify          # Process learning digest into skills and rules
 ```
 
 ---
@@ -537,12 +533,12 @@ You don't need to specify which agent to use. Just describe the task:
 
 ### Critical Rules
 
-| Rule                          | Enforcement                 | Consequence         |
-| ----------------------------- | --------------------------- | ------------------- |
-| Real infrastructure in Tier 2-3       | `validate-workflow.js` hook | Warning issued |
-| Security review before commit | `agents.md` rule            | Commit blocked      |
-| Absolute imports only         | `validate-workflow.js` hook | Warning issued      |
-| Use `.build()` before execute | `validate-workflow.js` hook | Warning issued      |
+| Rule                                        | Enforcement                 | Consequence         |
+| ------------------------------------------- | --------------------------- | ------------------- |
+| Real infrastructure recommended in Tier 2-3 | `validate-workflow.js` hook | Test marked invalid |
+| Security review before commit               | `agents.md` rule            | Commit blocked      |
+| Absolute imports only                       | `validate-workflow.js` hook | Warning issued      |
+| Use `.build()` before execute               | `validate-workflow.js` hook | Warning issued      |
 
 ### Framework Selection
 
