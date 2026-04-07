@@ -1,6 +1,6 @@
 ---
 name: gh-manager
-description: GitHub project and issue management specialist. Use for creating issues, managing milestones, or syncing with local todos.
+description: "GitHub issue manager. Use for issues, PRs, and project milestone tracking."
 tools: Read, Write, Edit, Bash, Grep, Glob, Task
 model: sonnet
 ---

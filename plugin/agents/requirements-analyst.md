@@ -1,6 +1,6 @@
 ---
 name: requirements-analyst
-description: Requirements analysis for systematic breakdown and decision records. Use when starting complex research initiatives or specification work.
+description: "Requirements analyst. Use for scoping research projects and identifying deliverables."
 tools: Read, Write, Edit, Grep, Glob, Task
 model: opus
 ---

@@ -4,8 +4,6 @@
  * Event: PreCompact
  * Purpose: Save critical context before compaction
  *
- * COR (CO for Research) workspace context preservation.
- *
  * Exit Codes:
  *   0 = success (continue)
  *   2 = blocking error (stop tool execution)
@@ -20,6 +18,13 @@ const {
   logObservation: logLearningObservation,
 } = require("./lib/learning-utils");
 const { detectActiveWorkspace } = require("./lib/workspace-utils");
+
+// Timeout fallback — prevents hanging the Claude Code session
+const TIMEOUT_MS = 10000;
+const _timeout = setTimeout(() => {
+  console.log(JSON.stringify({ continue: true }));
+  process.exit(1);
+}, TIMEOUT_MS);
 
 let input = "";
 process.stdin.setEncoding("utf8");
@@ -59,9 +64,11 @@ function savePreCompactState(data) {
     cwd,
     compactedAt: new Date().toISOString(),
     preservedContext: {
-      projectType: "research-workspace",
+      // Critical items to preserve
+      frameworkInUse: detectFramework(cwd),
+      activeWorkflows: findActiveWorkflows(cwd),
       recentlyModified: findRecentlyModified(cwd),
-      workspaceAreas: detectWorkspaceAreas(cwd),
+      criticalPatterns: extractCriticalPatterns(cwd),
     },
   };
 
@@ -73,20 +80,23 @@ function savePreCompactState(data) {
     );
     fs.writeFileSync(checkpointFile, JSON.stringify(checkpoint, null, 2));
 
-    // Log observation
+    // Log enriched connection_pattern observation for learning
     logLearningObservation(
       cwd,
-      "pre_compact",
+      "connection_pattern",
       {
-        project_type: "research-workspace",
+        framework: checkpoint.preservedContext.frameworkInUse,
+        active_workflows: checkpoint.preservedContext.activeWorkflows,
+        critical_patterns: checkpoint.preservedContext.criticalPatterns,
         recently_modified_count:
           checkpoint.preservedContext.recentlyModified.length,
-        workspace_areas: checkpoint.preservedContext.workspaceAreas,
       },
       {
         session_id,
       },
     );
+
+    // checkpoint-manager removed — learning digest replaces checkpoints
 
     // ── Workspace: remind to save session notes before compaction ──────
     try {
@@ -107,9 +117,63 @@ function savePreCompactState(data) {
   }
 }
 
-/**
- * Find recently modified files (last hour) — workspace artifacts and documents.
- */
+// Permitted exception to cc-artifacts Rule 4 (no semantic analysis in hooks):
+// Framework detection here is structural context preservation for compaction checkpoints,
+// not agent decision-making. See journal/0009 decision D1.
+function detectFramework(cwd) {
+  try {
+    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".py"));
+
+    for (const file of files.slice(0, 10)) {
+      try {
+        const content = fs.readFileSync(path.join(cwd, file), "utf8");
+        if (/@db\.model/.test(content) || /from dataflow/.test(content))
+          return "dataflow";
+        if (/from nexus/.test(content) || /Nexus\(/.test(content))
+          return "nexus";
+        if (
+          /from kaizen/.test(content) ||
+          /BaseAgent/.test(content) ||
+          /from kaizen\.api import Agent/.test(content)
+        )
+          return "kaizen";
+        if (/WorkflowBuilder/.test(content)) return "core-sdk";
+      } catch {}
+    }
+
+    return "core-sdk";
+  } catch {
+    return "unknown";
+  }
+}
+
+function findActiveWorkflows(cwd) {
+  try {
+    const workflows = [];
+    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".py"));
+
+    for (const file of files.slice(0, 10)) {
+      try {
+        const content = fs.readFileSync(path.join(cwd, file), "utf8");
+        if (/WorkflowBuilder/.test(content)) {
+          // Extract workflow name if possible
+          const match = content.match(
+            /workflow\s*=\s*WorkflowBuilder\s*\(\s*["']([^"']+)["']/,
+          );
+          workflows.push({
+            file,
+            name: match ? match[1] : "unnamed",
+          });
+        }
+      } catch {}
+    }
+
+    return workflows;
+  } catch {
+    return [];
+  }
+}
+
 function findRecentlyModified(cwd) {
   try {
     const oneHourAgo = Date.now() - 60 * 60 * 1000;
@@ -117,7 +181,7 @@ function findRecentlyModified(cwd) {
 
     const files = fs
       .readdirSync(cwd)
-      .filter((f) => f.endsWith(".md") || f.endsWith(".json"));
+      .filter((f) => f.endsWith(".py") || f.endsWith(".md"));
 
     for (const file of files) {
       try {
@@ -128,57 +192,39 @@ function findRecentlyModified(cwd) {
       } catch {}
     }
 
-    // Also check workspaces/ top level
-    try {
-      const wsDir = path.join(cwd, "workspaces");
-      if (fs.existsSync(wsDir)) {
-        const entries = fs.readdirSync(wsDir, { withFileTypes: true });
-        for (const entry of entries) {
-          if (entry.isDirectory() && !entry.name.startsWith("_")) {
-            try {
-              const subFiles = fs.readdirSync(path.join(wsDir, entry.name));
-              for (const f of subFiles.filter((f) => f.endsWith(".md"))) {
-                const stats = fs.statSync(path.join(wsDir, entry.name, f));
-                if (stats.mtime.getTime() > oneHourAgo) {
-                  recentFiles.push(`workspaces/${entry.name}/${f}`);
-                }
-              }
-            } catch {}
-          }
-        }
-      }
-    } catch {}
-
-    return recentFiles.slice(0, 20);
+    return recentFiles.slice(0, 10);
   } catch {
     return [];
   }
 }
 
-/**
- * Detect which workspace areas exist (workspaces/ subdirectories).
- */
-function detectWorkspaceAreas(cwd) {
-  const areas = {};
-  try {
-    const wsDir = path.join(cwd, "workspaces");
-    if (!fs.existsSync(wsDir)) return areas;
+function extractCriticalPatterns(cwd) {
+  const patterns = {
+    hasDataFlowModels: false,
+    hasNexusApp: false,
+    hasKaizenAgent: false,
+    hasCyclicWorkflow: false,
+    hasAsyncRuntime: false,
+  };
 
-    const entries = fs.readdirSync(wsDir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isDirectory() && !entry.name.startsWith("_")) {
-        try {
-          const count = fs
-            .readdirSync(path.join(wsDir, entry.name))
-            .filter((f) => !f.startsWith(".")).length;
-          if (count > 0) {
-            areas[entry.name] = count;
-          }
-        } catch {}
-      }
+  try {
+    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".py"));
+
+    for (const file of files.slice(0, 10)) {
+      try {
+        const content = fs.readFileSync(path.join(cwd, file), "utf8");
+        if (/@db\.model/.test(content)) patterns.hasDataFlowModels = true;
+        if (/Nexus\(/.test(content)) patterns.hasNexusApp = true;
+        if (/BaseAgent|from kaizen\.api import Agent/.test(content))
+          patterns.hasKaizenAgent = true;
+        if (/enable_cycles\s*=\s*True/.test(content))
+          patterns.hasCyclicWorkflow = true;
+        if (/AsyncLocalRuntime/.test(content)) patterns.hasAsyncRuntime = true;
+      } catch {}
     }
   } catch {}
-  return areas;
+
+  return patterns;
 }
 
 function cleanupOldCheckpoints(checkpointDir, sessionId, keepCount) {

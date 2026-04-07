@@ -1,6 +1,6 @@
 ---
 name: security-reviewer
-description: Security and sensitivity reviewer for research documents. Use before commits involving sensitive, strategic, or personal content.
+description: "Security reviewer. Use for checking sensitive data, credentials, and security practices."
 tools: Read, Grep, Glob
 model: opus
 ---

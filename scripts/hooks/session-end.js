@@ -4,8 +4,6 @@
  * Event: SessionEnd
  * Purpose: Save session state for future resumption
  *
- * COR (CO for Research) workspace session persistence.
- *
  * Exit Codes:
  *   0 = success (continue)
  *   2 = blocking error (stop tool execution)
@@ -18,7 +16,15 @@ const {
   resolveLearningDir,
   ensureLearningDir,
   logObservation: logLearningObservation,
+  countObservations,
 } = require("./lib/learning-utils");
+
+// Timeout fallback — prevents hanging the Claude Code session
+const TIMEOUT_MS = 15000;
+const _timeout = setTimeout(() => {
+  console.log(JSON.stringify({ continue: true }));
+  process.exit(1);
+}, TIMEOUT_MS);
 
 let input = "";
 process.stdin.setEncoding("utf8");
@@ -70,13 +76,13 @@ function saveSession(data) {
     const lastSessionFile = path.join(sessionDir, "last-session.json");
     fs.writeFileSync(lastSessionFile, JSON.stringify(sessionData, null, 2));
 
-    // Log session summary observation
+    // Log enriched session_summary observation for learning
     logLearningObservation(
       cwd,
       "session_summary",
       {
         file_counts: sessionData.stats,
-        project_type: "research-workspace",
+        framework: detectFramework(cwd),
         duration_estimate: estimateSessionDuration(session_id, sessionDir),
       },
       {
@@ -84,9 +90,19 @@ function saveSession(data) {
       },
     );
 
-    // --- Feedback loop: render instincts to rules file ---
+    // --- Log session accomplishments from .session-notes ---
     try {
-      writeInstinctsRule(cwd, learningDir);
+      logSessionAccomplishments(cwd, session_id);
+    } catch {}
+
+    // --- Log journal decisions created this session ---
+    try {
+      logDecisionReferences(cwd, session_id, sessionDir);
+    } catch {}
+
+    // --- Build learning digest (replaces instinct pipeline) ---
+    try {
+      buildLearningDigest(cwd, learningDir);
     } catch {}
 
     // Clean up old sessions (keep last 20)
@@ -98,44 +114,29 @@ function saveSession(data) {
   }
 }
 
-/**
- * Collect stats relevant to a research workspace.
- * Counts documents, workspace artifacts, and journal entries.
- */
+// Scans top-level cwd only (not subdirectories) for performance in hooks.
 function collectSessionStats(cwd) {
   try {
     const stats = {
-      markdownFiles: 0,
-      workspaceFiles: 0,
-      journalEntries: 0,
+      pythonFiles: 0,
+      testFiles: 0,
+      workflowFiles: 0,
     };
 
-    // Count top-level markdown files
-    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".md"));
-    stats.markdownFiles = files.length;
+    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".py"));
+    stats.pythonFiles = files.length;
 
-    // Count workspace artifacts
-    try {
-      const wsDir = path.join(cwd, "workspaces");
-      if (fs.existsSync(wsDir)) {
-        const entries = fs
-          .readdirSync(wsDir, { withFileTypes: true })
-          .filter((e) => e.isDirectory() && !e.name.startsWith("_"));
-        stats.workspaceFiles = entries.length;
-
-        // Count journal entries across workspaces
-        for (const entry of entries) {
-          try {
-            const journalDir = path.join(wsDir, entry.name, "journal");
-            if (fs.existsSync(journalDir)) {
-              stats.journalEntries += fs
-                .readdirSync(journalDir)
-                .filter((f) => f.endsWith(".md") && f !== "README.md").length;
-            }
-          } catch {}
-        }
+    for (const file of files) {
+      if (/_test\.py$|test_.*\.py$/.test(file)) {
+        stats.testFiles++;
       }
-    } catch {}
+      try {
+        const content = fs.readFileSync(path.join(cwd, file), "utf8");
+        if (/WorkflowBuilder/.test(content)) {
+          stats.workflowFiles++;
+        }
+      } catch {}
+    }
 
     return stats;
   } catch {
@@ -143,8 +144,31 @@ function collectSessionStats(cwd) {
   }
 }
 
+// Scans top-level cwd only (not subdirectories) for performance in hooks.
+function detectFramework(cwd) {
+  try {
+    const files = fs.readdirSync(cwd).filter((f) => f.endsWith(".py"));
+    for (const file of files.slice(0, 10)) {
+      try {
+        const content = fs.readFileSync(path.join(cwd, file), "utf8");
+        if (/@db\.model/.test(content) || /from dataflow/.test(content))
+          return "dataflow";
+        if (/from nexus/.test(content) || /Nexus\(/.test(content))
+          return "nexus";
+        if (/from kaizen/.test(content) || /BaseAgent/.test(content))
+          return "kaizen";
+        if (/WorkflowBuilder/.test(content)) return "core-sdk";
+      } catch {}
+    }
+    return "core-sdk";
+  } catch {
+    return "unknown";
+  }
+}
+
 function estimateSessionDuration(sessionId, sessionDir) {
   try {
+    // Check if there's a session start timestamp from the session file
     const sessionFile = path.join(sessionDir, `${sessionId}.json`);
     if (fs.existsSync(sessionFile)) {
       const data = JSON.parse(fs.readFileSync(sessionFile, "utf8"));
@@ -161,21 +185,140 @@ function estimateSessionDuration(sessionId, sessionDir) {
 }
 
 /**
- * Render learned instincts to .claude/rules/learned-instincts.md
- * so Claude Code auto-loads them on the next session.
+ * Log session accomplishments from .session-notes file.
+ * Parses the "Accomplished" or "Completed" section if it exists.
  */
-function writeInstinctsRule(cwd, learningDir) {
-  const { renderInstincts } = require("./lib/instinct-renderer");
-  const markdown = renderInstincts(learningDir);
-  if (!markdown) return;
+function logSessionAccomplishments(cwd, sessionId) {
+  // Check multiple possible locations for session notes
+  const candidates = [
+    path.join(cwd, ".session-notes"),
+    path.join(cwd, "workspaces"),
+  ];
 
-  const rulesDir = path.join(cwd, ".claude", "rules");
+  // Direct .session-notes file
+  const notesPath = candidates[0];
+  if (fs.existsSync(notesPath)) {
+    const stat = fs.statSync(notesPath);
+    const ageHours = (Date.now() - stat.mtimeMs) / (1000 * 60 * 60);
+    // Only log if modified recently (within last 4 hours = likely this session)
+    if (ageHours > 4) return;
+
+    const content = fs.readFileSync(notesPath, "utf8");
+    const accomplishments = extractAccomplishments(content);
+    if (accomplishments) {
+      logLearningObservation(
+        cwd,
+        "session_accomplishment",
+        { accomplishments: accomplishments.substring(0, 1000) },
+        { session_id: sessionId },
+      );
+    }
+    return;
+  }
+
+  // Check workspace session notes
+  const wsDir = candidates[1];
+  if (!fs.existsSync(wsDir)) return;
+
   try {
-    fs.mkdirSync(rulesDir, { recursive: true });
+    const workspaces = fs.readdirSync(wsDir);
+    for (const ws of workspaces) {
+      const wsNotes = path.join(wsDir, ws, ".session-notes");
+      if (!fs.existsSync(wsNotes)) continue;
+
+      const stat = fs.statSync(wsNotes);
+      const ageHours = (Date.now() - stat.mtimeMs) / (1000 * 60 * 60);
+      if (ageHours > 4) continue;
+
+      const content = fs.readFileSync(wsNotes, "utf8");
+      const accomplishments = extractAccomplishments(content);
+      if (accomplishments) {
+        logLearningObservation(
+          cwd,
+          "session_accomplishment",
+          {
+            workspace: ws,
+            accomplishments: accomplishments.substring(0, 1000),
+          },
+          { session_id: sessionId },
+        );
+      }
+    }
+  } catch {}
+}
+
+/**
+ * Extract the "Accomplished" section from session notes markdown.
+ */
+function extractAccomplishments(content) {
+  // Match ## Accomplished, ### Accomplished, or similar headings
+  const match = content.match(
+    /^#{1,4}\s*(?:Accomplished|Completed|Done|What was done)\s*\n([\s\S]*?)(?=\n#{1,4}\s|\n---|\Z)/im,
+  );
+  if (match && match[1].trim().length > 0) {
+    return match[1].trim();
+  }
+  return null;
+}
+
+/**
+ * Log journal entries created during this session as decision references.
+ */
+function logDecisionReferences(cwd, sessionId, sessionDir) {
+  const journalDir = path.join(cwd, "journal");
+  if (!fs.existsSync(journalDir)) return;
+
+  // Determine session start time
+  let sessionStartMs = Date.now() - 4 * 60 * 60 * 1000; // default: 4 hours ago
+  try {
+    const sessionFile = path.join(sessionDir, `${sessionId}.json`);
+    if (fs.existsSync(sessionFile)) {
+      const data = JSON.parse(fs.readFileSync(sessionFile, "utf8"));
+      if (data.startedAt) {
+        sessionStartMs = new Date(data.startedAt).getTime();
+      }
+    }
   } catch {}
 
-  const rulePath = path.join(rulesDir, "learned-instincts.md");
-  fs.writeFileSync(rulePath, markdown);
+  try {
+    const entries = fs.readdirSync(journalDir).filter((f) => f.endsWith(".md"));
+    for (const entry of entries) {
+      const entryPath = path.join(journalDir, entry);
+      const stat = fs.statSync(entryPath);
+      // Only log entries created/modified during this session
+      if (stat.mtimeMs < sessionStartMs) continue;
+
+      // Parse type from filename: NNNN-TYPE-topic.md
+      const match = entry.match(/^\d+-(\w+)-(.+)\.md$/);
+      if (!match) continue;
+
+      logLearningObservation(
+        cwd,
+        "decision_reference",
+        {
+          type: match[1], // DECISION, DISCOVERY, TRADE-OFF, etc.
+          topic: match[2].replace(/-/g, " "),
+          file: entry,
+        },
+        { session_id: sessionId },
+      );
+    }
+  } catch {}
+}
+
+/**
+ * Build learning digest from observations.
+ * Produces learning-digest.json — a structured summary consumed by /codify.
+ * Pure file I/O, no LLM calls. Semantic analysis happens in /codify.
+ */
+function buildLearningDigest(cwd, learningDir) {
+  const observationCount = countObservations(learningDir);
+  if (observationCount < 5) return;
+
+  try {
+    const digestBuilder = require("../learning/digest-builder");
+    digestBuilder.buildDigest(cwd, learningDir);
+  } catch {}
 }
 
 function cleanupOldSessions(sessionDir, keepCount) {

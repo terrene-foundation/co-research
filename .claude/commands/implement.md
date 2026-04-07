@@ -82,7 +82,7 @@ date: [When]
 initiative: [Which initiative]
 ```
 
-Store decisions in the workspace for `/codify` to capture later.
+Store decisions in the workspace for `/learn` to capture later.
 
 ### 6. Communicate progress and surface decisions
 

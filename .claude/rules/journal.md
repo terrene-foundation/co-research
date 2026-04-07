@@ -28,7 +28,7 @@ session_id: [session ID if available]
 session_turn: [conversation turn number]
 project: [project name]
 topic: [brief description]
-phase: teach | literature | deliberate | craft | validate-claim | challenge | check-refs | preflight | publish | codify
+phase: analyze | plan | execute | review | learn | deliver
 tags: [list of relevant tags]
 ---
 ```

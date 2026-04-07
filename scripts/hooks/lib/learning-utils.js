@@ -1,7 +1,7 @@
 /**
  * Shared utility: Per-project learning directory resolution and observation logging.
  *
- * Used by all hooks to ensure observations are stored
+ * Used by all hooks and learning scripts to ensure observations are stored
  * per-project (in <project>/.claude/learning/) rather than globally.
  */
 
@@ -13,21 +13,21 @@ const os = require("os");
  * Resolve the learning directory for a given project.
  *
  * Priority:
- *   1. COR_LEARNING_DIR env var (for testing)
+ *   1. KAILASH_LEARNING_DIR env var (for testing)
  *   2. <cwd>/.claude/learning/ (per-project)
- *   3. ~/.claude/cor-learning/ (fallback)
+ *   3. ~/.claude/kailash-learning/ (legacy fallback)
  *
  * @param {string} [cwd] - Project working directory
  * @returns {string} Absolute path to the learning directory
  */
 function resolveLearningDir(cwd) {
-  if (process.env.COR_LEARNING_DIR) {
-    return process.env.COR_LEARNING_DIR;
+  if (process.env.KAILASH_LEARNING_DIR) {
+    return process.env.KAILASH_LEARNING_DIR;
   }
   if (cwd) {
     return path.join(cwd, ".claude", "learning");
   }
-  return path.join(os.homedir(), ".claude", "cor-learning");
+  return path.join(os.homedir(), ".claude", "kailash-learning");
 }
 
 /**
@@ -39,42 +39,11 @@ function resolveLearningDir(cwd) {
 function ensureLearningDir(cwd) {
   const learningDir = resolveLearningDir(cwd);
 
-  const dirs = [
-    learningDir,
-    path.join(learningDir, "observations.archive"),
-    path.join(learningDir, "instincts", "personal"),
-    path.join(learningDir, "instincts", "inherited"),
-    path.join(learningDir, "evolved", "skills"),
-    path.join(learningDir, "evolved", "commands"),
-    path.join(learningDir, "evolved", "agents"),
-    path.join(learningDir, "checkpoints"),
-  ];
+  const dirs = [learningDir, path.join(learningDir, "observations.archive")];
 
   for (const dir of dirs) {
     try {
       fs.mkdirSync(dir, { recursive: true });
-    } catch {}
-  }
-
-  // Create identity file if it doesn't exist
-  const identityFile = path.join(learningDir, "identity.json");
-  if (!fs.existsSync(identityFile)) {
-    try {
-      const identity = {
-        system: "cor-research",
-        version: "1.0.0",
-        created_at: new Date().toISOString(),
-        learning_enabled: true,
-        per_project: true,
-        focus_areas: [
-          "research-integrity",
-          "citation-quality",
-          "academic-writing",
-          "deliberation-records",
-          "publication-standards",
-        ],
-      };
-      fs.writeFileSync(identityFile, JSON.stringify(identity, null, 2));
     } catch {}
   }
 
@@ -85,7 +54,7 @@ function ensureLearningDir(cwd) {
  * Append an observation to the per-project observations.jsonl file.
  *
  * @param {string} cwd - Project working directory
- * @param {string} type - Observation type (e.g. "workflow_pattern", "error_occurrence")
+ * @param {string} type - Observation type (e.g. "rule_violation", "user_correction", "workflow_pattern")
  * @param {Object} data - Observation data payload
  * @param {Object} [context] - Additional context (session_id, framework, etc.)
  */

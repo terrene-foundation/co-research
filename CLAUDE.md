@@ -1,6 +1,6 @@
 # COR -- CO for Research
 
-This is a **COR workspace** (Cognitive Orchestration for Research) implementing structured human-AI co-authorship for academic publications. COR applies the five-layer CO architecture to research writing: maintaining integrity, preventing citation fabrication, preserving authentic voice, and producing work that withstands peer review.
+This is a **COR workspace** (Cognitive Orchestration for Research) implementing structured human-AI co-authorship for academic publications. COR applies the CO architecture (eight principles, five-layer stack) to research writing: maintaining integrity, preventing citation fabrication, preserving authentic voice, and producing work that withstands peer review.
 
 ## Absolute Directives
 
@@ -69,25 +69,36 @@ When you discover a missing analysis, literature note, decision record, or journ
 
 ## Commands
 
-| Command           | Phase | Purpose                                                             |
-| ----------------- | ----- | ------------------------------------------------------------------- |
-| `/teach`          | 01    | Research tutor mode; explains concepts with context and debates     |
-| `/literature`     | 01    | Systematic literature search and structured assessment              |
-| `/deliberate`     | 02    | Record a structural decision about the paper                        |
-| `/craft`          | 03    | Author writes, AI teaches and critiques (defense prep, originality) |
-| `/write-para`     | 03    | AI drafts paragraph with margin notes; author approves              |
-| `/validate-claim` | 04    | Verify claims against cited sources                                 |
-| `/challenge`      | 04    | Hostile reviewer simulation                                         |
-| `/check-refs`     | 05    | Cross-reference and citation audit                                  |
-| `/preflight`      | 05    | Pre-submission deep validation                                      |
-| `/publish`        | 05    | Prepare for venue-specific submission                               |
-| `/ws`             | --    | Workspace status dashboard                                          |
-| `/wrapup`         | --    | Save session notes for continuity                                   |
-| `/checkpoint`     | --    | Review learning progress and journal entries                        |
+| Command           | Phase      | Purpose                                                                           |
+| ----------------- | ---------- | --------------------------------------------------------------------------------- |
+| `/teach`          | 01 Analyze | Research tutor mode; explains concepts with context and debates                   |
+| `/literature`     | 01 Analyze | Systematic literature search and structured assessment                            |
+| `/deliberate`     | 02 Plan    | Record a structural decision about the paper                                      |
+| `/craft`          | 03 Execute | Author writes, AI teaches and critiques (defense prep, originality)               |
+| `/write-para`     | 03 Execute | AI drafts paragraph with margin notes; author approves                            |
+| `/validate-claim` | 04 Review  | Verify claims against cited sources                                               |
+| `/challenge`      | 04 Review  | Hostile reviewer simulation                                                       |
+| `/redteam`        | 04 Review  | Red team review and stress testing                                                |
+| `/check-refs`     | 04 Review  | Cross-reference and citation audit                                                |
+| `/preflight`      | 04 Review  | Pre-submission deep validation                                                    |
+| `/learn`          | 05 Learn   | Capture institutional knowledge into .claude/ artifacts (human approval required) |
+| `/publish`        | 06 Deliver | Prepare and ship for venue-specific submission                                    |
+| `/ws`             | --         | Workspace status dashboard                                                        |
+| `/wrapup`         | --         | Save session notes for continuity                                                 |
+| `/checkpoint`     | --         | Review learning progress and journal entries                                      |
 
-## COR Workflow
+## COR Workflow (6 Phases)
 
-**Standard chain**: `/teach` + `/literature` -> `/deliberate` -> `/craft` (or `/write-para`) -> `/validate-claim` + `/challenge` -> `/check-refs` -> `/preflight` -> `/publish`
+**Standard chain**: `/teach` + `/literature` -> `/deliberate` -> `/craft` (or `/write-para`) -> `/validate-claim` + `/challenge` + `/check-refs` + `/preflight` -> `/learn` -> `/publish`
+
+| Phase | Name    | What Happens                                                        | COR Commands                                                             |
+| ----- | ------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| 01    | Analyze | Research the topic, literature landscape, gaps                      | `/teach`, `/literature`                                                  |
+| 02    | Plan    | Record structural decisions, scope, ordering                        | `/deliberate`                                                            |
+| 03    | Execute | Draft the paper (author-writes or AI-drafts modes)                  | `/craft`, `/write-para`                                                  |
+| 04    | Review  | Validate claims, stress-test, audit refs, produce finalized output  | `/validate-claim`, `/challenge`, `/redteam`, `/check-refs`, `/preflight` |
+| 05    | Learn   | Capture knowledge into .claude/ artifacts (human approval required) | `/learn`                                                                 |
+| 06    | Deliver | Package and ship for venue-specific submission                      | `/publish`                                                               |
 
 **Two co-authorship modes**:
 

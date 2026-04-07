@@ -138,32 +138,6 @@ Create journal entries for:
 **5c. Update the draft**
 Replace the corresponding paragraph in the draft version file with the author's approved text.
 
-## Parallel Operations
-
-While working with the author on one paragraph, background agents can:
-
-- Run the literature gap check for the NEXT paragraph (read-ahead)
-- Verify citations mentioned in the current paragraph
-- Check if recent publications affect upcoming paragraphs
-
-## Agent Team
-
-- **field-expert** -- Primary for Phase 1: teaches background literature and defense preparation
-- **literature-researcher** -- Primary for Phase 1c: searches for recent and missing literature
-- **writing-partner** -- Primary for Phase 3: critiques the author's draft (substance, style, flow)
-- **argument-critic** -- Support for Phase 3e: identifies defense vulnerabilities
-- **claims-verifier** -- Support: verifies specific claims in the author's draft
-
-## Rules That Apply
-
-- `rules/academic-writing-style.md` -- All originality and style requirements
-- `rules/research-integrity.md` -- No attribution without verification
-- `rules/deliberation-records.md` -- Every decision recorded
-
 ## Approval Gate
 
-FULL verification. Every paragraph requires explicit author approval. The author's text is the only text that goes into the paper.
-
-## The Principle
-
-The paper must be genuinely co-authored. The human makes every structural decision, understands every argument, and writes every sentence. The AI researches, teaches, and critiques. The output reflects the human's voice because the human wrote it. This is not a workaround for AI detection; it is the correct model of co-authorship.
+Every paragraph requires explicit author approval. The author's text is the only text that goes into the paper.

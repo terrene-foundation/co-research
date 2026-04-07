@@ -1,6 +1,6 @@
 ---
 name: preflight
-description: "Pre-submission deep validation of a publication document."
+description: "Phase 04 (Review). Pre-submission deep validation of a publication document."
 ---
 
 # /preflight — Publication Pre-Flight Check

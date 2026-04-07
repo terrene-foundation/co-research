@@ -1,11 +1,11 @@
 ---
 name: publish
-description: "Prepare a publication for submission to any academic venue (arXiv, SSRN, AIES, AI & Society). Handles quality checks, format conversion, packaging, and submission guides."
+description: "Phase 06 (Deliver). Package and ship a publication for venue-specific submission (arXiv, SSRN, AIES, AI & Society)."
 ---
 
 ## What This Command Does (present to user)
 
-Prepare a publication for submission to an academic venue. This handles the full lifecycle: quality checks against venue requirements, citation audit, format conversion, packaging, and step-by-step submission instructions. Works for arXiv, SSRN, AIES, AI & Society, and other venues.
+Package and ship a publication for submission to an academic venue. By this point, Phase 04 (Review) has produced finalized output and Phase 05 (Learn) has captured institutional knowledge. This phase handles format conversion, venue-specific packaging, and step-by-step submission instructions. Works for arXiv, SSRN, AIES, AI & Society, and other venues.
 
 For arXiv-specific work, this command subsumes `/arxiv` with additional multi-venue capabilities.
 
@@ -139,29 +139,11 @@ workspaces/<project>/05-submit/<venue>/
 - [ ] No archival-unsafe content
 - [ ] File size under venue limit
 
+
 ### 7. Generate Submission Guide
 
-Create `README-submit.md` with venue-specific step-by-step instructions:
-
-- Account creation (if first time)
-- Exact URL to submit
-- What to upload and in what order
-- Metadata to enter (title, abstract, keywords, category)
-- License selection
-- What to expect after submission (timeline, IDs)
+Create `README-submit.md` with step-by-step instructions for the target venue.
 
 ### 8. Track Submission
 
-Update the workspace brief or tracking document with:
-
-- Submission date
-- Venue
-- Assigned ID (when available)
-- Status (submitted, under review, accepted, revision requested)
-
-## Agent Teams
-
-- **cross-reference-auditor** — Cross-reference and citation accuracy
-- **claims-verifier** — Verify all claims before archival submission
-- **literature-researcher** — Identify missing references for citation density
-- **field-expert** — Content accuracy for the research domain
+Record submission date, venue, assigned ID, and status in the workspace.

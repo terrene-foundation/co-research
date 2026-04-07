@@ -11,7 +11,7 @@ This is a COR (Cognitive Orchestration for Research) workspace — a structured 
 
 ## The Core Workflow
 
-Every initiative follows the same 5-phase chain. Each command works independently but they're designed to flow together:
+Every initiative follows the same 6-phase chain. Each command works independently but they're designed to flow together:
 
 | Step         | Command      | What Happens                                                                            | Your Role                                  |
 | ------------ | ------------ | --------------------------------------------------------------------------------------- | ------------------------------------------ |
@@ -71,7 +71,7 @@ If the user needs a template for their brief:
 
 ## The Workflow for Different Types of Work
 
-The same 5-command chain works for all initiatives, but what happens inside each command adapts to the type of work:
+The same 6-phase chain works for all initiatives, but what happens inside each command adapts to the type of work:
 
 **Research Co-Authorship** (the primary COR workflow):
 

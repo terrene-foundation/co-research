@@ -11,20 +11,18 @@ This is a COR (Cognitive Orchestration for Research) workspace — a structured 
 
 ## The Core Workflow
 
-Every initiative follows the same 5-phase chain. Each command works independently but they're designed to flow together:
+Every initiative follows the same 6-phase chain. Each command works independently but they're designed to flow together:
 
-| Step         | Command      | What Happens                                                                            | Your Role                                  |
-| ------------ | ------------ | --------------------------------------------------------------------------------------- | ------------------------------------------ |
-| 1. Research  | `/analyze`   | Research your topic — literature landscape, competing approaches, gaps                  | Confirm the analysis captures what matters |
-| 2. Planning  | `/todos`     | Create a roadmap of deliverables                                                        | Approve the plan before work starts        |
-| 3. Execution | `/implement` | Create documents, drafts, or analyses one task at a time                                | Answer questions when decisions come up    |
-| 4. Review    | `/redteam`   | Stress-test from adversarial angles (logical gaps, weak arguments, consistency)         | Review findings                            |
-| 5. Knowledge | `/codify`    | Capture what we learned for future sessions                                             | Confirm the knowledge is accurate          |
+| Step        | Command      | What Happens                                                                            | Your Role                                  |
+| ----------- | ------------ | --------------------------------------------------------------------------------------- | ------------------------------------------ |
+| 1. Analyze  | `/analyze`   | Research your topic -- literature landscape, competing approaches, gaps                 | Confirm the analysis captures what matters |
+| 2. Plan     | `/todos`     | Create a roadmap of deliverables                                                        | Approve the plan before work starts        |
+| 3. Execute  | `/implement` | Create documents, drafts, or analyses one task at a time                                | Answer questions when decisions come up    |
+| 4. Review   | `/redteam`   | Stress-test from adversarial angles; produces finalized output                          | Review findings                            |
+| 5. Learn    | `/learn`     | Capture what we learned into .claude/ artifacts (requires your approval)                | Confirm the knowledge is accurate          |
+| 6. Deliver  | `/publish`   | Package and ship for academic submission (arXiv, SSRN, AIES)                           | Confirm venue and submission details       |
 
-**After codification**, you may:
-
-- `/publish` — Prepare work for academic submission (arXiv, SSRN, AIES)
-- Start a new cycle with `/analyze` for the next initiative
+**After delivery**, you may start a new cycle with `/analyze` for the next initiative.
 
 Plus **`/ws`** anytime to check progress and **`/wrapup`** before ending a session.
 
@@ -71,7 +69,7 @@ If the user needs a template for their brief:
 
 ## The Workflow for Different Types of Work
 
-The same 5-command chain works for all initiatives, but what happens inside each command adapts to the type of work:
+The same 6-phase chain works for all initiatives, but what happens inside each command adapts to the type of work:
 
 **Research Co-Authorship** (the primary COR workflow):
 
@@ -80,15 +78,18 @@ The same 5-command chain works for all initiatives, but what happens inside each
 - `/craft` for author-writes mode (AI teaches and critiques) or `/write-para` for AI-drafts mode (author approves every paragraph)
 - `/validate-claim` and `/challenge` to verify claims and simulate hostile reviewers
 - `/check-refs` to audit citation integrity
+- `/learn` to capture institutional knowledge into .claude/ artifacts
+- `/publish` to package and ship for submission
 
 **Publication Preparation** (papers for arXiv, SSRN, AIES):
 
 - Use the core chain for research and drafting
-- Then `/publish` for venue-specific preparation and quality checks
+- Phase 04 (Review) produces finalized output via `/preflight`
+- Then `/learn` to capture knowledge, `/publish` for venue-specific packaging and shipping
 
 **General Research Initiative**:
 
-- `/analyze` → `/todos` → `/implement` → `/redteam` → `/codify`
+- `/analyze` -> `/todos` -> `/implement` -> `/redteam` -> `/learn` -> `/publish`
 - Works for literature reviews, methodology development, or any structured research project
 
 ## Available Expertise

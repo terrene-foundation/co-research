@@ -6,7 +6,7 @@
  *          This is the PRIMARY mechanism that survives context compression,
  *          because it runs fresh on every turn (independent of memory).
  *
- * COR (CO for Research) workspace rules injection.
+ * Framework-agnostic — works with any Kailash project.
  *
  * Exit Codes:
  *   0 = success (continue)
@@ -20,7 +20,13 @@ const {
   buildCompactSummary,
   ensureEnvFile,
 } = require("./lib/env-utils");
-const { buildWorkspaceSummary } = require("./lib/workspace-utils");
+const {
+  buildWorkspaceSummary,
+  findAllSessionNotes,
+} = require("./lib/workspace-utils");
+const {
+  logObservation: logLearningObservation,
+} = require("./lib/learning-utils");
 
 const TIMEOUT_MS = 3000;
 const timeout = setTimeout(() => {
@@ -46,6 +52,7 @@ process.stdin.on("end", () => {
 
 function buildReminder(data) {
   const cwd = data.cwd || process.cwd();
+  const userMessage = (data.tool_input?.user_message || "").toLowerCase();
 
   // ── Always inject env summary (brief, 1-2 lines) ─────────────────
   const envPath = path.join(cwd, ".env");
@@ -75,27 +82,94 @@ function buildReminder(data) {
     );
   }
 
-  // Line 3: COR research integrity rules (anti-amnesia)
+  // Line 3: Zero-tolerance behavioral rules (always present, survives compression)
   lines.push(
-    "[COR] Research co-authorship mode active. " +
-      "Every claim must cite a verified source. No fabricated references. " +
-      "Teach as you write. " +
-      "Check deliberation decisions before re-debating settled questions.",
+    "[ZERO-TOLERANCE] " +
+      "Pre-existing failures MUST be FIXED, not reported. " +
+      "Stubs/TODOs/placeholders are BLOCKED — implement fully or remove. " +
+      "No naive fallbacks hiding errors. " +
+      "No workarounds for SDK bugs — deep dive, reproduce, file GitHub issue. " +
+      "Never hardcode models/keys. " +
+      "Create missing records (god-mode). " +
+      "Implement gaps, don't document them.",
   );
 
-  // Line 4: Core behavioral rules
-  lines.push(
-    "[RULES] No overclaims: 'first', 'only', 'novel' require 'to our knowledge' qualification. " +
-      "No em dashes (U+2014). No AI-signature words. " +
-      "Disclose AI assistance per venue requirements (Principle 8).",
-  );
-
-  // Line 5: Workspace context (survives compaction — primary anti-amnesia mechanism)
+  // Line 4: Workspace context (survives compaction — primary anti-amnesia mechanism)
   try {
     const wsSummary = buildWorkspaceSummary(cwd);
     if (wsSummary) {
       lines.push(`[WORKSPACE] ${wsSummary}`);
     }
+  } catch {}
+
+  // ── Session notes (critical for continuity across sessions) ───────
+  try {
+    const allNotes = findAllSessionNotes(cwd);
+    if (allNotes.length === 1) {
+      const note = allNotes[0];
+      const staleTag = note.stale ? " (STALE — verify before acting)" : "";
+      const label = note.workspace ? `[${note.workspace}]` : "[root]";
+      lines.push(
+        `[SESSION-NOTES] ${label} Read ${note.relativePath} before starting work${staleTag} — updated ${note.age}`,
+      );
+    } else if (allNotes.length > 1) {
+      const parts = allNotes.map((note) => {
+        const label = note.workspace || "root";
+        const staleTag = note.stale ? " STALE" : "";
+        return `${label} (${note.age}${staleTag})`;
+      });
+      lines.push(
+        `[SESSION-NOTES] ${allNotes.length} workspaces with notes — pick one to continue: ${parts.join(" | ")}`,
+      );
+    }
+  } catch {}
+
+  // ── Contextual reminders based on user message content ────────────
+  const llmKeywords = [
+    "model",
+    "llm",
+    "agent",
+    "gpt",
+    "claude",
+    "gemini",
+    "openai",
+    "anthropic",
+    "api key",
+    "shadow agent",
+    "objective",
+  ];
+  const e2eKeywords = [
+    "e2e",
+    "test",
+    "playwright",
+    "validate",
+    "red-team",
+    "persona",
+    "rbac",
+    "login",
+  ];
+
+  const mentionsLLM = llmKeywords.some((kw) => userMessage.includes(kw));
+  const mentionsE2E = e2eKeywords.some((kw) => userMessage.includes(kw));
+
+  if (mentionsLLM) {
+    lines.push(
+      "[REMINDER] Read model name from .env (OPENAI_PROD_MODEL or equivalent). " +
+        "Read API key from .env. NEVER hardcode.",
+    );
+  }
+
+  if (mentionsE2E) {
+    lines.push(
+      "[REMINDER] God-mode E2E: Create ALL missing records. " +
+        "Adapt to data changes. Assume correct role. " +
+        "If endpoint missing, implement it.",
+    );
+  }
+
+  // --- User correction detection for learning system ---
+  try {
+    logUserCorrection(data.tool_input?.user_message, cwd, data.session_id);
   } catch {}
 
   return {
@@ -106,4 +180,40 @@ function buildReminder(data) {
       message: lines.join("\n"),
     },
   };
+}
+
+/**
+ * Detect user corrections and log as learning observations.
+ * A correction is when the user pushes back on an approach or redirects.
+ * Pure string matching — no LLM. /codify does semantic analysis later.
+ */
+function logUserCorrection(rawMessage, cwd, sessionId) {
+  if (!rawMessage || rawMessage.length < 10) return;
+
+  // Patterns that indicate the user is correcting the agent's approach.
+  // We check sentence-start positions to avoid false positives like "no problem".
+  const correctionPatterns = [
+    /^no[,.]?\s/im, // "No, use X instead"
+    /^don'?t\s/im, // "Don't do that"
+    /^stop\s/im, // "Stop doing X"
+    /^wrong/im, // "Wrong approach"
+    /^that'?s\s+(not|wrong|incorrect)/im, // "That's not right"
+    /\binstead\s+use\b/i, // "instead use X"
+    /\bnot\s+like\s+that\b/i, // "not like that"
+    /\bwhy\s+did\s+you\b/i, // "why did you do X"
+    /\byou\s+should(n'?t|\s+not)\b/i, // "you shouldn't" / "you should not"
+    /\bthat'?s\s+completely\b/i, // "that's completely wrong"
+    /\bi\s+don'?t\s+understand\b/i, // "I don't understand" (signals confusion with output)
+  ];
+
+  const matched = correctionPatterns.some((p) => p.test(rawMessage));
+  if (!matched) return;
+
+  // Log the correction — /codify will analyze semantically
+  logLearningObservation(
+    cwd,
+    "user_correction",
+    { message: rawMessage.substring(0, 500) },
+    { session_id: sessionId || "unknown" },
+  );
 }

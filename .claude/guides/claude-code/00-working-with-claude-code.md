@@ -69,7 +69,8 @@ The phase structure is enforced via **self-contained slash commands**:
 | 02    | `/todos`     | `todos/active/`                               |
 | 03    | `/implement` | `src/`, `apps/`, `docs/`                      |
 | 04    | `/redteam`   | `04-validate/`                                |
-| 05    | `/codify`    | Updates existing agents and skills            |
+| 05    | `/learn`     | Captures knowledge into .claude/ artifacts    |
+| 06    | `/publish`   | Packages and ships for submission             |
 
 Each command is self-contained -- it includes workspace detection, workflow steps, and agent teams.
 
@@ -77,8 +78,8 @@ Each command is self-contained -- it includes workspace detection, workflow step
 
 The end state is a project where:
 
-- **Agents** in `.claude/agents/` understand what to do (updated by `/codify`)
-- **Skills** in `.claude/skills/` know how to do it (updated by `/codify`)
+- **Agents** in `.claude/agents/` understand what to do (updated by `/learn`)
+- **Skills** in `.claude/skills/` know how to do it (updated by `/learn`)
 - **Docs** in `docs/00-developers/` provide full context
 - **Future sessions** can work WITHOUT these instruction templates
 
@@ -430,4 +431,4 @@ This is **autonomous maintainability** - where the project maintains itself.
 
 - **[01-what-is-claude-code.md](01-what-is-claude-code.md)** - Next: Understanding Claude Code
 - **[README.md](README.md)** - Guide index
-- **[commands/](../../commands/)** - Phase slash commands (`/analyze`, `/todos`, `/implement`, `/redteam`, `/codify`)
+- **[commands/](../../commands/)** - Phase slash commands (`/analyze`, `/todos`, `/implement`, `/redteam`, `/learn`, `/publish`)

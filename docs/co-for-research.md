@@ -76,7 +76,7 @@ Four hooks enforcing quality at the tool level:
 
 ### L4: Instructions (Structured Workflows)
 
-Thirteen commands implementing a five-phase workflow:
+Fourteen commands implementing a six-phase workflow:
 
 | Phase | Commands | Purpose |
 |-------|----------|---------|

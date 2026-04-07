@@ -1,109 +1,153 @@
 ---
 name: codify
-description: "Load phase 05 (codify) for the current workspace. Capture institutional knowledge."
+description: "Load phase 05 (codify) for the current workspace. Update existing agents and skills with new knowledge."
 ---
-
-## What This Phase Does (present to user)
-
-Capture everything we learned during this initiative — the decisions, patterns, and domain knowledge — so that future work starts with full context. This is the institutional memory: next time anyone works on related topics, the AI already knows what was decided and why.
-
-## Your Role (communicate to user)
-
-Confirm that the captured knowledge accurately represents the decisions made and their rationale. You're reviewing for intent and accuracy — "Does this describe what we decided and why?"
 
 ## Workspace Resolution
 
 1. If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
 2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `instructions/`)
 3. If no workspace exists, ask the user to create one first
-4. Read all files in `workspaces/<project>/briefs/` for user context
+4. Read all files in `workspaces/<project>/briefs/` for user context (this is the user's input surface)
 
 ## Phase Check
 
-- Read `workspaces/<project>/04-validate/` to confirm validation passed (if applicable)
-- Review the knowledge base for areas that need updating
-- Output updates go into appropriate project directories
+- Read `workspaces/<project>/04-validate/` to confirm validation passed
+- Read `docs/` and `docs/00-authority/` for knowledge base
+- Output: update existing agents and skills in their canonical locations (e.g., `agents/frameworks/`, `skills/01-core-sdk/`, `skills/02-dataflow/`, etc.)
+
+## Execution Model
+
+This phase executes under the **autonomous execution model** (see `rules/autonomous-execution.md`). Knowledge extraction and codification are autonomous — agents extract, structure, and validate knowledge without human intervention. The human reviews the codified output at the end (structural gate on what becomes institutional knowledge), but the extraction and synthesis process is fully autonomous.
 
 ## Workflow
 
-### 1. Knowledge extraction
+### 1. Consume learning digest
 
-Review all work produced in this initiative:
+Before extracting new knowledge, integrate what the learning system has captured:
 
-- What decisions were made and why
-- What patterns emerged
-- What risks were identified and how they were addressed
-- What cross-references were established
+1. Read `.claude/learning/learning-digest.json` — the structured summary of recent observations
+2. Read `.claude/learning/learning-codified.json` — what was previously codified (avoid re-processing)
+3. Read recent journal entries referenced in the digest (`decisions` array) — DECISION and DISCOVERY entries contain semantic context
+4. Read `.session-notes` — latest session accomplishments and outstanding items
 
-### 2. Decision log consolidation
+Analyze the digest for actionable findings:
 
-Collect all decisions from the implementation phase and create a consolidated decision log:
+- **Corrections** → Do any rules or skills need updating to match user preferences? Each correction is a real signal where the user pushed back on an approach.
+- **Error patterns** → Should any recurring rule violations become new rule sections (DO/DO NOT with examples)?
+- **Decisions** → Should any architectural decisions from journals become agent or skill knowledge?
+- **Accomplishments** → Do any completed features need documentation in skills?
 
-```yaml
-decisions:
-  - decision: "Example decision description"
-    rationale: "Why this was chosen over alternatives"
-    alternatives_rejected: "What other options were considered"
-    date: 2026-03-24
-    initiative: project-name
-    confidence: high
+For each finding, either:
+
+- Update an existing rule (add DO/DO NOT with example and Why)
+- Update a skill's SKILL.md or sub-files
+- Update an agent's knowledge section
+- Skip (not worth codifying — explain why)
+
+After processing, write `.claude/learning/learning-codified.json` to record what was analyzed:
+
+```json
+{
+  "last_codified": "2026-04-07T12:00:00Z",
+  "digest_hash": "<sha256 of digest at time of processing>",
+  "actions_taken": [
+    { "type": "rule_update", "file": "rules/patterns.md", "reason": "..." },
+    {
+      "type": "skill_update",
+      "file": "skills/03-nexus/SKILL.md",
+      "reason": "..."
+    }
+  ]
+}
 ```
 
-Store in `workspaces/<project>/decisions.yml` for future reference.
+This closes the feedback loop: observe → digest → **codify into real artifacts**.
 
-### 3. Pattern observation
+### 2. Deep knowledge extraction
 
-Identify recurring patterns from this initiative that could improve future work:
+Using as many subagents as required, peruse `docs/`, especially `docs/00-authority/`.
 
-- **Process patterns**: What workflow steps were most/least effective?
-- **Decision patterns**: Were there recurring decision types (e.g., "always chose simpler over comprehensive")?
-- **Quality patterns**: What issues came up repeatedly during review?
-- **Agent patterns**: Which agent combinations worked well together?
+- Read beyond the docs into the intent of this project/product
+- Understand the roles and use of agents, skills, docs:
+  - **Agents** — What to do, how to think about this, following procedural directives
+  - **Skills** — Distilled knowledge for 100% situational awareness
+  - **`docs/`** — Full knowledge base
 
-Document observations for the learning pipeline. If a pattern appears with high confidence (3+ occurrences), propose it as a candidate rule or skill update.
+### 3. Update existing agents
 
-### 4. Update knowledge base
+Improve agents in their canonical locations.
 
-Update the relevant areas of the project's documentation:
+- Reference `.claude/agents/_subagent-guide.md` for agent format
+- Identify which existing agent(s) should absorb the new knowledge
+- If no existing agent covers the domain, create a new agent in the appropriate directory
 
-- Add or update documents in the appropriate directory
-- Ensure cross-references are bidirectional
-- Update any affected foundational documents (with care — these are authoritative)
-- Add supporting research to the appropriate documentation area
+### 4. Update existing skills
 
-### 5. Update memory and session notes
+Improve skills in their canonical locations.
 
-If significant knowledge was gained that applies across sessions:
+- Reference `.claude/guides/claude-code/06-the-skill-system.md` for skill format
+- Update the directory's `SKILL.md` entry point to reference new files
+- Skills must be detailed enough for agents to achieve situational awareness from them alone
 
-- Update auto-memory with key patterns and decisions
-- Ensure the anti-amnesia rules are still accurate
-- Update learned-instincts if new patterns were confirmed
+### 5. Update README.md and documentation (MANDATORY)
 
-### 6. Present captured knowledge
+Ensure user-facing documentation reflects new capabilities. Verify README.md, docstrings, and docs build.
 
-Summarize what was captured and where it lives. Ask:
+### 6. Red team the agents and skills
 
-- "Does this accurately represent what we decided?"
-- "Is there anything we learned that I missed capturing?"
-- "Should any of this be kept confidential rather than in the knowledge base?"
+Validate that generated agents and skills are correct, complete, and secure. **claude-code-architect** verifies cc-artifacts compliance (descriptions under 120 chars, agents under 400 lines, commands under 150 lines, rules path-scoped, SKILL.md progressive disclosure).
 
-### 7. What comes next
+### 7. Create upstream proposal (BUILD repos only)
 
-After codification, guide the user to the appropriate next step:
+**This step applies ONLY to BUILD repos** (kailash-py, kailash-rs). Detect by checking:
 
-**Does this work need further iteration?**
+- Git remote contains `kailash-py` or `kailash-rs`, OR
+- `pyproject.toml` contains `name = "kailash"` or `Cargo.toml` contains `name = "kailash"`
 
-- More tasks to implement → Run `/implement` again
-- New concerns emerged → Run `/analyze` on the new concern
-- Adjacent initiative needed → Create a new brief and start a new cycle
+**If this is a downstream project repo** (anything else): SKIP this step. Downstream repos consume COC artifacts from templates — they do not propose changes upstream. Artifact changes from `/codify` in downstream repos stay local to that project. Report:
 
-**Is this work complete?**
+> Artifacts updated locally. This is a downstream project repo — changes stay local.
+> Only BUILD repos (kailash-py, kailash-rs) create upstream proposals.
 
-- Knowledge is captured, initiative is done → The knowledge base is updated for future sessions
+**If this is a BUILD repo**: Create a proposal for upstream review at loom/ (source of truth).
 
-**Are there domain-specific next steps?**
+**DO NOT sync directly to COC template repos.** All distribution flows through loom/ via `/sync`.
 
-- Check available commands (e.g., `/publish`) for post-codification workflows specific to this project type
+1. Create `.claude/.proposals/` directory if it doesn't exist
+2. Read the SDK version from `pyproject.toml` (py) or `Cargo.toml` (rs) and the COC artifact version from `.claude/VERSION`
+3. Generate `.claude/.proposals/latest.yaml` listing all artifact changes:
+
+```yaml
+source_repo: kailash-py # or kailash-rs
+codify_date: YYYY-MM-DD
+codify_session: "type(scope): description of work"
+sdk_version: "2.2.1" # from pyproject.toml or Cargo.toml
+coc_version: "1.0.0" # from .claude/VERSION
+
+changes:
+  - file: relative/path/to/artifact.md
+    action: created | modified
+    suggested_tier: cc | co | coc | coc-py | coc-rs
+    reason: "Why this artifact was created/changed"
+    diff_lines: "+N -N" # for modifications
+
+status: pending_review
+```
+
+4. For each changed artifact, suggest a tier:
+   - **cc**: Claude Code universal (guides, cc-audit)
+   - **co**: Methodology universal (CO principles, journal, communication)
+   - **coc**: Codegen, language-agnostic (workflow phases, analysis patterns)
+   - **coc-py** / **coc-rs**: Language-specific (code examples, SDK patterns)
+
+5. Report to the developer:
+
+> Artifacts updated locally and available in this repo. Proposal created at
+> `.claude/.proposals/latest.yaml` with {N} changes for upstream review.
+> When ready, open loom/ and run `/sync {py|rs}` to classify and distribute.
+
+See `rules/artifact-flow.md` for the full flow rules.
 
 ## Agent Teams
 
@@ -111,10 +155,28 @@ Deploy these agents as a team for codification:
 
 **Knowledge extraction team:**
 
-- **deep-analyst** — Identify core decisions and patterns worth capturing
-- **requirements-analyst** — Distill requirements into reusable knowledge
+- **analyst** — Identify core patterns, architectural decisions, and domain knowledge worth capturing
+- **analyst** — Distill requirements into reusable agent instructions
+- `co-reference` skill — Ensure agents and skills follow COC five-layer architecture (codification IS Layer 5 evolution)
 
-**Quality team:**
+**Creation team:**
 
-- **cross-reference-auditor** — Review captured knowledge for accuracy and completeness
-- **claims-verifier** — Verify any factual claims in the captured knowledge
+- **reviewer** — Validate that skill examples are correct and runnable
+- **reviewer** — Review agent/skill quality before finalizing
+
+**Validation team (red team the agents and skills):**
+
+- **claude-code-architect** — Verify cc-artifacts compliance: descriptions <120 chars, agents <400 lines, commands <150 lines, rules have `paths:` frontmatter, SKILL.md progressive disclosure, no CLAUDE.md duplication
+- **gold-standards-validator** — Terrene naming, licensing accuracy, terminology standards
+- **testing-specialist** — Verify any code examples in skills are testable
+- **security-reviewer** — Audit agents/skills for prompt injection, insecure patterns, secrets exposure
+
+**Upstream proposal (step 7 — BUILD repos only):**
+
+- Only in BUILD repos (kailash-py, kailash-rs): generate `.claude/.proposals/latest.yaml` with tier suggestions
+- Downstream project repos: skip proposal creation, changes stay local
+- See `rules/artifact-flow.md` for the controlled flow: BUILD repo → loom/ → templates
+
+### Journal
+
+Create **DECISION** entries for codification choices. Use sequential `NNNN-` naming.

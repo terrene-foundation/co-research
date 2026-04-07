@@ -1,6 +1,6 @@
 ---
 name: cross-reference-auditor
-description: Ensures cross-paper and intra-paper citation integrity. Checks every citation resolves, every reference is cited, suffixes are consistent across papers, and scope boundaries are respected.
+description: "Cross-reference auditor. Use for citation consistency and reference list verification."
 model: inherit
 allowed-tools:
   - Read

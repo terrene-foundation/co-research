@@ -1,6 +1,6 @@
 ---
 name: writing-partner
-description: Paragraph-level academic co-writing with deliberation. Presents drafts with inline annotations explaining every choice. Maintains voice consistency. Presents alternatives. Records deliberation decisions.
+description: "Academic writing partner. Use for drafting, revision, and prose quality improvement."
 model: opus
 allowed-tools:
   - Read

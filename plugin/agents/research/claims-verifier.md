@@ -1,6 +1,6 @@
 ---
 name: claims-verifier
-description: Verifies every factual and attributive claim against its cited source. Checks whether the source actually says what is attributed to it. Produces structured verification reports with pass/fail/warn per claim.
+description: "Claims verifier. Use for checking factual claims against cited sources."
 model: opus
 allowed-tools:
   - Read

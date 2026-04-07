@@ -1,6 +1,6 @@
 ---
 name: literature-researcher
-description: Systematic literature discovery and deep reading. Searches academic databases, reads papers, synthesizes findings, and explains them accessibly. Every finding includes what the paper says, what it does NOT say, and how it connects to the user's argument.
+description: "Literature researcher. Use for systematic literature search, source evaluation, and synthesis."
 model: opus
 allowed-tools:
   - Read

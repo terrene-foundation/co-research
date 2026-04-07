@@ -1,6 +1,6 @@
 ---
 name: check-refs
-description: "Audit all cross-references and citations in a paper or across papers."
+description: "Phase 04 (Review). Audit all cross-references and citations in a paper or across papers."
 ---
 
 ## What This Command Does (present to user)

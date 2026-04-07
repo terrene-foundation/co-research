@@ -1,6 +1,6 @@
 ---
 name: intermediate-reviewer
-description: Review specialist for document quality, consistency, and cross-reference accuracy. Use after significant document changes.
+description: "Code and content reviewer. Use after changes for quality review before committing."
 tools: Read, Grep, Glob, Task
 model: opus
 ---

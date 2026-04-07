@@ -1,11 +1,11 @@
 ---
 name: redteam
-description: "Load phase 04 (validate) for the current workspace. Red team review and stress testing."
+description: "Phase 04 (Review). Red team review and stress testing. Produces finalized output."
 ---
 
 ## What This Phase Does (present to user)
 
-Stress-test everything from adversarial angles — looking for logical gaps, inconsistencies, weak arguments, and missing provisions. Think of it as bringing in a hostile reviewer, a pedantic editor, and a methodological critic to find every weakness.
+Stress-test everything from adversarial angles and produce finalized output. Phase 04 (Review) is where the work gets validated and finalized — looking for logical gaps, inconsistencies, weak arguments, and missing provisions. Think of it as bringing in a hostile reviewer, a pedantic editor, and a methodological critic to find every weakness.
 
 ## Your Role (communicate to user)
 
@@ -74,6 +74,15 @@ Report results as scenarios the user can evaluate:
 - **What didn't hold**: Describe vulnerabilities as specific scenarios with severity ratings
 - **What was fixed**: Describe fixes in terms of what they prevent
 - **Overall confidence**: Summarize as "X out of Y attack vectors are defended. The remaining vulnerabilities are: [plain description]"
+
+## What Comes Next
+
+After review produces finalized output, the next steps are:
+
+- **`/learn`** (Phase 05) -- Capture institutional knowledge into .claude/ artifacts (human approval required)
+- **`/publish`** (Phase 06) -- Package and ship for venue-specific submission
+
+Do NOT skip `/learn` -- the knowledge captured during review is some of the most valuable for future sessions.
 
 ## Agent Teams
 

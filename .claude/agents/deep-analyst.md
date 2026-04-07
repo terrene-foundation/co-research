@@ -1,6 +1,6 @@
 ---
 name: deep-analyst
-description: Deep analysis for failure points, risks, and requirements. Use for complex decisions, structural analysis, or strategy evaluation.
+description: "Deep analyst. Use for argument strength, logical consistency, and evidence gap analysis."
 tools: Read, Grep, Glob, Task
 model: opus
 ---

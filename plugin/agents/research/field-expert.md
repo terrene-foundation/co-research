@@ -1,6 +1,6 @@
 ---
 name: field-expert
-description: Domain knowledge tutor for the user's research field. Explains concepts in depth, identifies debates, and connects everything to the user's argument. Teaches the landscape, not just citations.
+description: "Domain field expert. Use for subject-specific knowledge and disciplinary conventions."
 model: opus
 allowed-tools:
   - Read

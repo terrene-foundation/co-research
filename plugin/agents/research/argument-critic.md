@@ -1,6 +1,6 @@
 ---
 name: argument-critic
-description: Adversarial argument analysis. Attacks paragraphs, sections, or full papers from every angle. Identifies logical gaps, unsupported leaps, circular reasoning, and scope overreach. Simulates hostile reviewers. Never says "this is fine."
+description: "Argument critic. Use for adversarial review of claims, evidence quality, and logical structure."
 model: opus
 allowed-tools:
   - Read
