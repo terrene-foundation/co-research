@@ -28,10 +28,11 @@ Review and approve the roadmap before work starts. This is your most important c
 
 ### 1. Review plans with specialists
 
-Reference plans in `workspaces/<project>/02-plans/` and work through every file.
+Reference plans in `workspaces/<project>/02-plans/` and work through every file. **Also read `specs/_index.md` plus relevant spec files** for domain truth. **If `specs/_index.md` does not exist, STOP — return to `/analyze` to create specs. Do NOT create specs during /todos.** See `rules/specs-authority.md`.
 
 - Consult relevant domain experts for specialized work
 - Ensure cross-references and dependencies are mapped
+- Each todo MUST reference which spec file(s) it implements (e.g., "Implements: specs/methodology.md §Sampling")
 
 ### 2. Create comprehensive todos
 
