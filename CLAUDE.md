@@ -81,15 +81,14 @@ When you discover a missing analysis, literature note, decision record, or journ
 | `/redteam`        | 04 Review  | Red team review and stress testing                                                |
 | `/check-refs`     | 04 Review  | Cross-reference and citation audit                                                |
 | `/preflight`      | 04 Review  | Pre-submission deep validation                                                    |
-| `/learn`          | 05 Learn   | Capture institutional knowledge into .claude/ artifacts (human approval required) |
+| `/codify`          | 05 Learn   | Capture institutional knowledge into .claude/ artifacts (human approval required) |
 | `/publish`        | 06 Deliver | Prepare and ship for venue-specific submission                                    |
 | `/ws`             | --         | Workspace status dashboard                                                        |
 | `/wrapup`         | --         | Save session notes for continuity                                                 |
-| `/checkpoint`     | --         | Review learning progress and journal entries                                      |
 
 ## COR Workflow (6 Phases)
 
-**Standard chain**: `/teach` + `/literature` -> `/deliberate` -> `/craft` (or `/write-para`) -> `/validate-claim` + `/challenge` + `/check-refs` + `/preflight` -> `/learn` -> `/publish`
+**Standard chain**: `/teach` + `/literature` -> `/deliberate` -> `/craft` (or `/write-para`) -> `/validate-claim` + `/challenge` + `/check-refs` + `/preflight` -> `/codify` -> `/publish`
 
 | Phase | Name    | What Happens                                                        | COR Commands                                                             |
 | ----- | ------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -97,7 +96,7 @@ When you discover a missing analysis, literature note, decision record, or journ
 | 02    | Plan    | Record structural decisions, scope, ordering                        | `/deliberate`                                                            |
 | 03    | Execute | Draft the paper (author-writes or AI-drafts modes)                  | `/craft`, `/write-para`                                                  |
 | 04    | Review  | Validate claims, stress-test, audit refs, produce finalized output  | `/validate-claim`, `/challenge`, `/redteam`, `/check-refs`, `/preflight` |
-| 05    | Learn   | Capture knowledge into .claude/ artifacts (human approval required) | `/learn`                                                                 |
+| 05    | Learn   | Capture knowledge into .claude/ artifacts (human approval required) | `/codify`                                                                 |
 | 06    | Deliver | Package and ship for venue-specific submission                      | `/publish`                                                               |
 
 **Two co-authorship modes**:

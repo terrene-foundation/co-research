@@ -1,3 +1,8 @@
+---
+paths:
+  - "workspaces/**"
+---
+
 # Deliberation Records Rules
 
 ## Scope

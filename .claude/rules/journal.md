@@ -1,3 +1,9 @@
+---
+paths:
+  - "workspaces/**/journal/**"
+  - "workspaces/**"
+---
+
 # Journal Rules
 
 ## Scope

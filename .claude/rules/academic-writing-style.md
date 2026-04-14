@@ -1,3 +1,8 @@
+---
+paths:
+  - "workspaces/**"
+---
+
 # Academic Writing Style and Authentic Voice Preservation
 
 ## Scope
