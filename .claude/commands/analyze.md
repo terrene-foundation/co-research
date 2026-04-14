@@ -47,6 +47,10 @@ Document analysis in `workspaces/<project>/01-analysis/`, plans in `workspaces/<
 - Use as many subdirectories and files as required
 - Name them sequentially as 01-, 02-, etc, for easy referencing
 
+### 4a. Create `specs/` (MUST — before redteam)
+
+Create `workspaces/<project>/specs/` with an `_index.md` manifest plus one spec file per major research domain area (e.g., `thesis.md`, `methodology.md`, `literature-scope.md`, `claims-and-evidence.md`). Each spec file MUST be detailed enough to be the authority on its topic. For each requirement in the brief, confirm a corresponding spec section exists — missing mappings are BLOCKING. See `rules/specs-authority.md`.
+
 ### 5. Red team (internal quality check)
 
 Work with agents to scrutinize analysis and plans:

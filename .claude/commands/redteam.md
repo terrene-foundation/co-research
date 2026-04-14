@@ -27,7 +27,11 @@ Review the findings and decide which issues matter. Results will be presented as
 
 ## Workflow
 
-### 1. Document consistency audit
+### 1. Spec coverage audit (MUST run first)
+
+Walk `workspaces/<project>/briefs/` → `specs/_index.md` → relevant spec files → `02-plans/` → artifacts produced during `/implement` and verify that EVERY specified item was actually built — not just exists. **Specs are the PRIMARY source** — they contain the detailed thesis, methodology, and claim-to-evidence mapping that the brief only summarizes. For each spec file, extract assertions at field level and verify against the actual artifacts. Artifact diverging from spec without logged deviation = HIGH. Produce `04-validate/.spec-coverage` as a table mapping brief item → spec file → todo → artifact → status. **Existence is NOT fulfillment.**
+
+### 2. Document consistency audit
 
 Review all related documents for internal consistency:
 
@@ -36,7 +40,7 @@ Review all related documents for internal consistency:
 - No contradictions between documents
 - No orphaned or circular references
 
-### 2. Adversarial stress testing
+### 3. Adversarial stress testing
 
 Deploy agents to attack the content from hostile perspectives:
 
@@ -46,7 +50,7 @@ Deploy agents to attack the content from hostile perspectives:
 - **Evidence gaps**: Are claims proportional to the evidence presented?
 - **Reviewer attacks**: What would the most hostile reviewer at the target venue say?
 
-### 3. Publication quality check (if work is destined for publication)
+### 4. Publication quality check (if work is destined for publication)
 
 If the initiative involves publications or external-facing content:
 
@@ -56,7 +60,7 @@ If the initiative involves publications or external-facing content:
 - Verify no internal file paths or references in publication content
 - Check terminology consistency throughout
 
-### 4. Iterate until convergence
+### 5. Iterate until convergence
 
 Continuously engage review agents:
 
@@ -65,7 +69,7 @@ Continuously engage review agents:
 - Verify no regressions (fixing one issue doesn't create another)
 - Keep iterating until agents find no more gaps
 
-### 5. Report results (in plain language)
+### 6. Report results (in plain language)
 
 Report results as scenarios the user can evaluate:
 
@@ -79,10 +83,10 @@ Report results as scenarios the user can evaluate:
 
 After review produces finalized output, the next steps are:
 
-- **`/learn`** (Phase 05) -- Capture institutional knowledge into .claude/ artifacts (human approval required)
+- **`/codify`** (Phase 05) -- Capture institutional knowledge into .claude/ artifacts (human approval required)
 - **`/publish`** (Phase 06) -- Package and ship for venue-specific submission
 
-Do NOT skip `/learn` -- the knowledge captured during review is some of the most valuable for future sessions.
+Do NOT skip `/codify` -- the knowledge captured during review is some of the most valuable for future sessions.
 
 ## Agent Teams
 

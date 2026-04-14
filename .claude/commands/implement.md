@@ -36,11 +36,14 @@ Use the todo-manager to create detailed todos for EVERY SINGLE TODO in `todos/00
 
 ### 2. Execute
 
+**Context anchor first**: read `specs/_index.md`, identify which spec files cover this todo's domain, read them. The spec is the authority on what to build. Per `rules/specs-authority.md` MUST §4.
+
 Implement the next todo using the appropriate team of agents.
 
 - Read relevant existing documents before writing new content
 - Check foundational documents for alignment (if they exist in this repo)
 - Check related documents for consistency
+- **Check spec currency**: if this todo changed domain truth (revised thesis, updated methodology, new evidence mapping), update the relevant spec file immediately per `rules/specs-authority.md` MUST §5. If execution deviates from spec, STOP: update spec with deviation and rationale, flag user-visible changes for researcher approval.
 
 ### 3. Quality standards
 
