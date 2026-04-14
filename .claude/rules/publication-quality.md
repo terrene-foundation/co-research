@@ -1,3 +1,10 @@
+---
+paths:
+  - "workspaces/**/06-deliver/**"
+  - "workspaces/**/portfolio/**"
+  - "workspaces/**/03-execute/**"
+---
+
 # Publication Quality Standards
 
 ## Scope

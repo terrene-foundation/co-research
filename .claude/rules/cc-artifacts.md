@@ -1,5 +1,5 @@
 ---
-globs:
+paths:
   - ".claude/agents/**"
   - ".claude/skills/**"
   - ".claude/rules/**"
@@ -139,7 +139,7 @@ Rules about domain-specific patterns MUST use YAML frontmatter path globs.
 ```yaml
 # DO: Scoped rule (loads only when editing matching files)
 ---
-globs:
+paths:
   - "src/db/**"
   - "migrations/**"
 ---

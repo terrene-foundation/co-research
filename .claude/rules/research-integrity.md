@@ -1,3 +1,8 @@
+---
+paths:
+  - "workspaces/**"
+---
+
 # Research Integrity Rules
 
 ## Scope

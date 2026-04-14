@@ -1,0 +1,22 @@
+{
+  "version": "1.2.0",
+  "type": "co-domain",
+  "domain": "research",
+  "description": "CO for Research (COR) — academic co-authorship methodology",
+  "released": "2026-04-12",
+  "upstream": {
+    "name": "atelier",
+    "version": "1.2.0"
+  },
+  "changelog": [
+    {
+      "version": "1.2.0",
+      "date": "2026-04-12",
+      "summary": "Initial VERSION tracking — inherited specs-authority from atelier 1.2.0",
+      "changes": [
+        "NEW: rules/specs-authority.md — specs/ as single source of domain truth (8 MUST rules, delegation protocol)",
+        "NOTE: Phase command integration (analyze/todos/implement/redteam/codify/publish) deferred to per-domain adaptation session — research uses domain-specific command flavors that require careful specs integration"
+      ]
+    }
+  ]
+}

@@ -1,3 +1,8 @@
+---
+paths:
+  - ".claude/**"
+---
+
 # No Placeholders or Incomplete Content
 
 ## Scope
