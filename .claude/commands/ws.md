@@ -1,23 +1,23 @@
 ---
 name: ws
-description: "Show workspace status dashboard. Read-only."
+description: Show workspace status dashboard. Read-only.
 ---
 
-Display the current workspace status in plain language. Do not modify any files.
+# Workspace Status
 
-1. List all directories under `workspaces/` (excluding `instructions/`).
+Check the current state of the active workspace.
 
-2. For the most recently modified workspace (or `$ARGUMENTS` if specified):
-   - Show workspace name and path
-   - Derive current phase and present using plain-language descriptions:
-     - Has `01-analysis/` files → "Research and planning completed"
-     - Has `todos/active/` files → "Project roadmap created — ready for your review"
-     - Has `todos/completed/` files → "Building in progress" + progress summary
-     - Has `04-validate/` files → "Testing completed — results ready for your review"
-     - Agents/skills were updated in phase 05 → "Knowledge captured — the AI remembers this project"
-   - Show progress: "X of Y tasks completed" (count files in `todos/active/` vs `todos/completed/`)
-   - List the 5 most recently modified files in the workspace
-   - If `.session-notes` exists, show its contents and age
-   - Suggest the next action: "Next step: run `/implement` to continue building" or similar
+## Workspace Resolution
 
-3. Present as a compact, friendly summary. Use plain language throughout.
+1. If `$ARGUMENTS` specifies a project name, use `workspaces/$ARGUMENTS/`
+2. Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
+3. If no workspace exists, tell the user to create one first
+
+## Dashboard
+
+1. List contents of each phase directory (01-analyze, 02-plan, 03-execute, 04-vet, 05-codify, 06-deliver)
+2. Count completed vs active todos
+3. Check for .session-notes
+4. Report the current phase based on which of the six directories have content
+
+Present as a clear status dashboard.

@@ -1,14 +1,14 @@
 ---
 name: journal
-description: "View journal status, create entries, or search the research journal."
+description: "View journal status, create entries, or search the project journal."
 ---
 
-Manage the research journal. The journal is the primary knowledge trail -- it captures decisions, discoveries, trade-offs, risks, connections, and gaps across research sessions.
+Manage the project journal. The journal is the primary knowledge trail — it captures decisions, discoveries, trade-offs, risks, connections, and gaps across sessions.
 
 Parse `$ARGUMENTS`:
 
 - **Empty or "status"**: Show journal status
-- **"new TYPE topic"**: Create a new journal entry (e.g., `new DECISION chose-mixed-methods`)
+- **"new TYPE topic"**: Create a new journal entry (e.g., `new DECISION chose-event-driven`)
 - **"search QUERY"**: Search existing entries by topic or tag
 
 ---
@@ -17,7 +17,7 @@ Parse `$ARGUMENTS`:
 
 1. Determine the active workspace:
    - If working in a workspace, use it
-   - Otherwise, use the most recently modified directory under `workspaces/` (excluding `instructions/`)
+   - Otherwise, use the most recently modified directory under `workspaces/` (excluding `_template/`)
 
 2. In the workspace's `journal/` directory:
    - Count total entries
@@ -47,13 +47,13 @@ session_id: [current session ID if available, otherwise omit]
 session_turn: [approximate conversation turn number when this entry was created]
 project: [workspace name]
 topic: [topic description]
-phase: [current COR phase: teach | literature | deliberate | craft | validate-claim | challenge | check-refs | preflight | publish | codify]
+phase: [current CO phase: analyze | plan | execute | vet | codify | deliver]
 tags: []
 ---
 
 ## [Section heading appropriate to type]
 
-[Content -- prompt the user for details if not provided]
+[Content — prompt the user for details if not provided]
 
 ## For Discussion
 
@@ -61,7 +61,6 @@ tags: []
 ```
 
 4. Type-specific structure:
-
    - **DECISION**: Sections for Decision, Alternatives Considered, Rationale, Consequences
    - **DISCOVERY**: Sections for What Was Discovered, Why It Matters, Follow-Up
    - **TRADE-OFF**: Sections for Trade-Off, What Was Gained, What Was Sacrificed, Acceptable Because

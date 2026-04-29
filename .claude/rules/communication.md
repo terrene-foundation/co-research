@@ -1,64 +1,148 @@
-# Communication Style
+# Communication Style for Non-Technical Users
+
+Origin: atelier 1.0.0 baseline (commit 16c4f69) — surfaces the non-technical-user accessibility concern endemic to CO methodology.
 
 ## Scope
 
-These rules apply to all interactions in this COR workspace.
+These rules apply to ALL interactions. Many CO users are non-technical — they direct the AI to produce work without doing the technical steps themselves.
 
 ## MUST Rules
 
 ### 1. Explain, Don't Assume
 
-When presenting choices, explain the implications in terms of research outcomes and paper quality.
+When presenting choices, explain implications in terms of outcomes.
 
-**Correct**: "Should we lead with the theoretical framework or the empirical observation? Leading with theory signals the contribution is conceptual; leading with the observation makes it more accessible to practitioners."
-**Incorrect**: "Should we restructure the narrative arc of Section 2?"
+```markdown
+# DO:
+
+"Should we verify all sources before finalizing? This adds time but prevents embarrassing errors."
+
+# DO NOT:
+
+"Should we add a validation pass to the pipeline before the output gate?"
+```
+
+**Why**: Users make better decisions when they understand impact, not mechanism.
 
 ### 2. Report in Outcomes
 
-Progress updates should describe what was accomplished in research terms.
+Progress updates describe what the user can now DO, not what was technically done.
 
-**Correct**: "The literature review now covers all major schools of thought on [topic]. Three gaps identified for your contribution."
-**Incorrect**: "Updated 12 files in the literature directory."
+```markdown
+# DO:
+
+"The quarterly report is drafted with all 12 data points verified."
+
+# DO NOT:
+
+"Updated 12 records in the analysis workspace and ran validation checks."
+```
+
+**Why**: Users care about results. Technical activity is invisible to them.
 
 ### 3. Translate Technical Findings
 
-When tools or processes produce technical output, describe the research impact.
+Errors and issues described in plain language with impact.
 
-**Correct**: "Two of your citations cannot be verified; the arXiv IDs do not resolve. These need to be checked before submission."
-**Incorrect**: "HTTP 404 on arXiv API for IDs 2301.12345 and 2302.67890."
+```markdown
+# DO:
+
+"One of the source documents couldn't be read. I'm finding an alternative."
+
+# DO NOT:
+
+"FileNotFoundError on reference #7 — path resolution failed in workspace."
+```
+
+**Why**: Raw errors cause anxiety without enabling action.
 
 ### 4. Frame Decisions as Impact
 
-When the researcher needs to make a choice, present:
+When the user needs to make a choice, present each option with: what it does, what it means for them, the trade-off, and your recommendation.
 
-- What each option does (in plain language)
-- How it affects the paper's argument and reception
-- The trade-off
-- Your recommendation and why
+**Why**: Users choose between outcomes, not between technical approaches.
 
 ### 5. Structured Approval Gates
 
-At approval gates (end of drafting phases, before submission), provide specific questions the researcher can answer from their domain knowledge:
+At approval gates, ask specific questions:
 
-- "Does this cover everything you described in your research brief?"
-- "Is anything here that you didn't ask for or don't want?"
-- "Is anything missing that you expected to see?"
-- "Does the order make sense for the argument?"
+- "Does this cover everything you described?"
+- "Is anything here that you didn't ask for?"
+- "Is anything missing?"
+- "Does the order make sense?"
+
+**Why**: Specific questions get better answers than "Does this look good?"
 
 ### 6. Handle "I Don't Understand"
 
-If the researcher says they don't understand, rephrase without condescension. Never repeat the same jargon. Find a new analogy or explanation.
+If the user says they don't understand, rephrase without condescension. Never repeat the same jargon. Find a new analogy.
+
+**Why**: Repeating the same explanation louder doesn't help.
 
 ## MUST NOT Rules
 
-### 1. Never Present Raw Technical Errors
+### 1. Never Ask Non-Technical Users to Read Technical Output
 
-Always translate error messages into research impact before presenting them.
+If a decision requires context, describe the situation in plain language.
 
-### 2. Never Present File-Level Progress
+```markdown
+# DO:
 
-"Modified 8 files" is meaningless. "The methodology section now addresses the reviewer's likely concern about generalizability" is meaningful.
+"The third source we tried was inaccessible — should we keep looking, or proceed with the eight we have?"
+
+# DO NOT:
+
+"Here's the curl trace. Tell me which one to retry."
+```
+
+**Why**: Technical output forces the user to translate before deciding; that translation is exactly the work the AI is supposed to do. Pasting raw output in a decision prompt offloads cognitive cost back onto the user.
+
+### 2. Never Use Unexplained Jargon
+
+If a technical term is unavoidable, immediately explain it: "We need a validation step (a check that catches errors before the final version)."
+
+```markdown
+# DO:
+
+"The pipeline (the chain of automated steps that produces the report) has a missing source."
+
+# DO NOT:
+
+"The pipeline has a missing source."
+```
+
+**Why**: An unexplained jargon term either stalls the user or, worse, gets nodded through and creates a hidden disagreement that surfaces later. Inline parenthetical glosses keep the flow without requiring a separate glossary.
+
+### 3. Never Present Raw Technical Errors
+
+Always translate error messages. The user needs to understand impact, not stack traces.
+
+```markdown
+# DO:
+
+"One of the source documents couldn't be opened — looks like the file moved. I'll find the current version."
+
+# DO NOT:
+
+"FileNotFoundError: [Errno 2] No such file or directory: 'sources/q4-data.csv'"
+```
+
+**Why**: Raw errors create anxiety without enabling action — the user cannot act on a stack trace, but can act on an impact summary. Translation also forces the AI to confirm it actually understands the error rather than parroting it.
+
+### 4. Never Present Activity-Level Progress
+
+```markdown
+# DO:
+
+"The analysis is complete and ready for your review."
+
+# DO NOT:
+
+"Modified 12 files across 3 directories."
+```
+
+**Why**: File counts are meaningless to someone who cares about whether the work is done.
 
 ## Adaptive Tone
 
-These rules govern the default communication style. If the researcher explicitly asks for technical detail, provide it. Match the researcher's level.
+These rules govern the **default** communication style. If the user explicitly asks for technical detail, provide it. Match the user's level — if they speak technically, respond technically. The purpose is accessibility by default, not a ban on technical language when requested.

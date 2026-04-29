@@ -1,103 +1,120 @@
 # Git Workflow Rules
 
-## Scope
+Origin: inbound sync from loom 2.8.0 deterministic-quality artifact suite (atelier 1.1.0, commit b1aa2af).
 
-These rules apply to all git operations in this repository.
+## Conventional Commits
 
-## MUST Rules
-
-### 1. Conventional Commits
-
-Commit messages MUST follow conventional commits format.
-
-**Format**:
+All commits MUST use the conventional format:
 
 ```
 type(scope): description
-
-[optional body]
-
-[optional footer]
 ```
 
-**Types**:
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation
-- `style`: Formatting, no code change
-- `refactor`: Code restructure
-- `test`: Adding tests
-- `chore`: Maintenance
+```markdown
+# DO:
 
-**Examples**:
+feat(auth): add OAuth2 support
+fix(api): resolve rate limiting issue
 
-```
-docs(literature): add assessment of Smith (2024) on institutional design
-feat(draft): complete methodology section first draft
-fix(refs): correct citation suffix for Jones 2024a/b
-chore(workspace): set up new paper workspace
+# DO NOT:
+
+updated auth stuff
+fixed bug
 ```
 
-### 2. Branch Naming
+**Why:** Non-conventional commits break automated changelog generation and make `git log --oneline` useless for release notes.
 
-Feature branches MUST follow naming convention.
+## Branch Naming
 
-**Format**: `type/description`
+Branch names MUST follow `type/description` format.
 
-**Examples**:
+```markdown
+# DO:
 
-- `docs/literature-review`
-- `feat/methodology-section`
-- `fix/citation-audit`
+feat/add-auth
+fix/api-timeout
+chore/update-deps
 
-### 3. PR Description
+# DO NOT:
 
-Pull requests MUST include:
-
-- Summary of changes (what and why)
-- Test plan (how to verify)
-- Related issues (links)
-
-### 4. Atomic Commits
-
-Each commit MUST be self-contained.
-
-- One commit per logical change
-- Each commit should be coherent (a complete literature note, a full section draft, etc.)
-
-**Incorrect**:
-
-```
-"WIP"
-"fix stuff"
-"update files"
+my-branch
+jack-working-on-stuff
+new_feature_v2_final
 ```
 
-## MUST NOT Rules
+**Why:** Inconsistent branch names prevent CI pattern-matching rules and make `git branch --list` unreadable across contributors.
 
-### 1. No Secrets in Commits
+## PR Descriptions
 
-MUST NOT commit sensitive information (API keys, passwords, personal contact details beyond published affiliations).
+PRs MUST include a summary section and a `## Related issues` section linking to the motivating issue.
 
-### 2. No Large Binaries
+```markdown
+# DO:
 
-MUST NOT commit large binary files (PDFs over 10MB, dataset files). Use Git LFS or external storage.
+## Summary
 
-### 3. No Force Push to Main
+Add OAuth2 provider support for external authentication.
 
-MUST NOT force push to main/master.
+## Related issues
 
-## Branching Strategy
+Fixes #123
 
-### Main
+# DO NOT:
 
-- Always deployable
-- Protected branch
-- Requires PR with reviews
+(empty PR body, or just "see commits")
+```
 
-### Feature Branches
+**Why:** Without issue links, PRs become disconnected from their motivation, breaking traceability and preventing automatic issue closure on merge.
 
-- Branch from main
-- PR back to main
-- Delete after merge
+## Rules
+
+### Atomic Commits
+
+One logical change per commit, tests + implementation together. MUST NOT mix unrelated changes.
+
+```markdown
+# DO:
+
+Commit 1: feat(auth): add OAuth2 provider interface
+Commit 2: fix(api): handle rate limit retry
+
+# DO NOT:
+
+Commit 1: add OAuth2 + fix rate limit + update README + bump deps
+```
+
+**Why:** Mixed commits are impossible to revert cleanly.
+
+### Commit Bodies MUST Answer WHY, Not WHAT
+
+The diff shows what changed. The commit body MUST explain why.
+
+```markdown
+# DO — explains why:
+
+feat(sync): add path-scoping to domain rules
+
+Rules without paths: frontmatter loaded in every session's
+baseline, consuming ~5500 tokens with no benefit for sessions
+that never touch the relevant files. Path-scoping makes rules
+load once on first matching file read.
+
+# DO NOT — restates the diff:
+
+feat(sync): add path-scoping to domain rules
+
+Added paths: frontmatter to 12 rule files. Updated
+cc-artifacts.md and execution-discipline.md.
+```
+
+**Why:** Commit bodies that explain "why" are the cheapest form of institutional documentation — co-located with the code, versioned, searchable via `git log --grep`, and never stale.
+
+### Safety
+
+- MUST NOT push directly to main or force push to main
+- MUST NOT commit secrets (API keys, passwords, tokens, .env files)
+- MUST NOT commit large binaries (>10MB single file)
+
+**Why:** Direct pushes bypass CI and review. Leaked secrets require immediate key rotation. Large binaries permanently bloat the repo since git never forgets them.

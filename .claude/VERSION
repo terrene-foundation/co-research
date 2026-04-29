@@ -1,14 +1,23 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "co-domain",
   "domain": "research",
   "description": "CO for Research (COR) — academic co-authorship methodology",
-  "released": "2026-04-12",
+  "released": "2026-04-29",
   "upstream": {
     "name": "atelier",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   "changelog": [
+    {
+      "version": "1.2.1",
+      "date": "2026-04-29",
+      "summary": "Sync from atelier 1.2.1 — cc-audit fidelity convergence + Origin tag backfill",
+      "changes": [
+        "MODIFIED: 14 shared artifacts (5 agents, 4 commands, 5 rules)",
+        "Origin: tags backfilled on cc-artifacts, communication, git, journal, no-stubs"
+      ]
+    },
     {
       "version": "1.2.0",
       "date": "2026-04-12",

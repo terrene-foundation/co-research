@@ -1,123 +1,71 @@
 ---
 name: start
-description: "New user orientation — explains the workflow and how to get started"
+description: "New session orientation. Explains atelier's role, the 6-phase workflow, and how to begin a project."
 ---
 
-Present this orientation to the user in a warm, clear way. Adapt tone based on context.
+# /start
 
-## What Is This?
+Present this orientation in a warm, clear way. Adapt tone — if the user seems new, take more time; if they're experienced, be concise.
 
-This is a COR (Cognitive Orchestration for Research) workspace — a structured system for human-AI co-authorship of academic publications. The AI helps you research, draft, review, and publish academic papers while maintaining research integrity and preserving your authentic voice.
+## What is atelier?
 
-## The Core Workflow
+Atelier is the **CO + CC methodology authority**. It's where the canonical patterns for Cognitive Orchestration and Claude Code artifacts are designed, reviewed, and shipped to downstream consumers (loom for codegen, lyceum for education, terrene for governance and research, plus all the co-\* domain repos).
 
-Every initiative follows the same 6-phase chain. Each command works independently but they're designed to flow together:
+Atelier is NOT a codegen shop. It produces methodology — agents, skills, rules, commands, hooks — that other repos consume.
 
-| Step        | Command      | What Happens                                                                            | Your Role                                  |
-| ----------- | ------------ | --------------------------------------------------------------------------------------- | ------------------------------------------ |
-| 1. Analyze  | `/analyze`   | Research your topic -- literature landscape, competing approaches, gaps                 | Confirm the analysis captures what matters |
-| 2. Plan     | `/todos`     | Create a roadmap of deliverables                                                        | Approve the plan before work starts        |
-| 3. Execute  | `/implement` | Create documents, drafts, or analyses one task at a time                                | Answer questions when decisions come up    |
-| 4. Review   | `/redteam`   | Stress-test from adversarial angles; produces finalized output                          | Review findings                            |
-| 5. Learn    | `/learn`     | Capture what we learned into .claude/ artifacts (requires your approval)                | Confirm the knowledge is accurate          |
-| 6. Deliver  | `/publish`   | Package and ship for academic submission (arXiv, SSRN, AIES)                           | Confirm venue and submission details       |
+## What you do here
 
-**After delivery**, you may start a new cycle with `/analyze` for the next initiative.
+You direct the AI to do CO methodology work. That work follows 6 phases:
 
-Plus **`/ws`** anytime to check progress and **`/wrapup`** before ending a session.
+| #   | Phase   | Command    | What happens                                                                |
+| --- | ------- | ---------- | --------------------------------------------------------------------------- |
+| 1   | Analyze | `/analyze` | Research the problem space. Surface findings and gaps. No decisions yet.    |
+| 2   | Plan    | `/plan`    | Decompose findings into approved tasks. **STOPS for your approval.**        |
+| 3   | Execute | `/execute` | Draft artifacts one task at a time, with verification.                      |
+| 4   | Vet     | `/vet`     | Spec coverage + adversarial review. Promotes drafts to canonical artifacts. |
+| 5   | Codify  | `/codify`  | Extract reusable patterns into atelier's own .claude/ for future runs.      |
+| 6   | Deliver | `/deliver` | Package the work and identify which downstream syncs are needed.            |
 
-## Workspace Resolution
+Plus cross-cutting commands you'll use along the way:
 
-If `$ARGUMENTS` specifies a project name, focus on `workspaces/$ARGUMENTS/` for this session. Otherwise, check for existing workspaces and offer to create one.
+- `/ws` — workspace status dashboard
+- `/journal` — knowledge trail (decisions, discoveries, risks)
+- `/wrapup` — save session notes before ending
+- `/cc-audit` — audit CC+CO artifacts for quality
+- `/sync`, `/sync-to-coc` — push artifacts downstream
 
-## Getting Started
+## Getting started
 
-Walk the user through these steps:
+### If you have an idea but no workspace yet
 
-1. **Check workspace**: Run `/ws` to see current status
-2. **Start an initiative**: Create or update a brief in `workspaces/<project>/briefs/` describing what you want to accomplish
-3. **Run `/analyze`**: This kicks off the research phase
+1. Create a workspace from the template:
 
-### Brief Template
+   ```bash
+   cp -r workspaces/_template workspaces/<your-project>
+   ```
 
-If the user needs a template for their brief:
+2. Edit `workspaces/<your-project>/brief.md` — describe what you want to do, in your own words. Include why it matters and what success looks like. The brief is the user's input surface.
 
-```markdown
-# [Initiative Name]
+3. Run `/analyze` — this kicks off the research phase.
 
-## What We're Doing
+### If you already have a workspace
 
-[1-2 paragraphs: What is this initiative and why does it matter?]
+Run `/ws` to see current status, or jump straight to the next phase command if you know where you left off.
 
-## Who It Affects
+## Tips for working with atelier
 
-[List stakeholders and their concerns]
+- **You don't need to write rules yourself.** Describe what you want; the AI proposes the artifacts and you approve.
+- **The plan gate is the only mandatory stop.** Phases 1, 3, 4, 5, 6 run autonomously between gates. Phase 2 (`/plan`) MUST stop for your approval.
+- **The journal is the memory.** Every session should produce journal entries — DECISION, DISCOVERY, TRADE-OFF, RISK, CONNECTION, GAP. This is how knowledge compounds across sessions.
+- **Atelier is the source.** Changes here propagate downstream via `/sync` and `/sync-to-coc`. Take care — what you ship from atelier becomes the canonical reference for every domain that consumes it.
+- **Domain neutrality matters.** Atelier methodology MUST work for codegen, research, finance, education, governance, and any future domain. Per `rules/domain-independence.md`, no domain-specific assumptions in CC/CO artifacts.
 
-## Success Criteria
+## Where to learn more
 
-- [What does "done" look like?]
-- [What outcomes matter?]
+- `CLAUDE.md` — atelier's identity and absolute directives
+- `.claude/skills/co-reference/` — CO methodology reference (8 principles, 5 layers, 6 phases)
+- `.claude/skills/cc-artifact-patterns/` — CC artifact quality reference
+- `.claude/skills/atelier-broker-model/` — atelier's role in the ecosystem
+- `.claude/rules/` — the enforced rules (artifact-flow, cc-artifacts, communication, domain-independence, execution-discipline, git, independence, journal, no-stubs, rule-authoring, specs-authority, terrene-naming)
 
-## Known Constraints
-
-[Deadlines, regulatory requirements, dependencies, budget]
-
-## Related Prior Work
-
-[Links to existing docs, briefs, or prior decisions]
-```
-
-## The Workflow for Different Types of Work
-
-The same 6-phase chain works for all initiatives, but what happens inside each command adapts to the type of work:
-
-**Research Co-Authorship** (the primary COR workflow):
-
-- `/teach` and `/literature` to learn the field and find papers
-- `/deliberate` to record structural decisions (scope, ordering, framing)
-- `/craft` for author-writes mode (AI teaches and critiques) or `/write-para` for AI-drafts mode (author approves every paragraph)
-- `/validate-claim` and `/challenge` to verify claims and simulate hostile reviewers
-- `/check-refs` to audit citation integrity
-- `/learn` to capture institutional knowledge into .claude/ artifacts
-- `/publish` to package and ship for submission
-
-**Publication Preparation** (papers for arXiv, SSRN, AIES):
-
-- Use the core chain for research and drafting
-- Phase 04 (Review) produces finalized output via `/preflight`
-- Then `/learn` to capture knowledge, `/publish` for venue-specific packaging and shipping
-
-**General Research Initiative**:
-
-- `/analyze` -> `/todos` -> `/implement` -> `/redteam` -> `/learn` -> `/publish`
-- Works for literature reviews, methodology development, or any structured research project
-
-## Available Expertise
-
-The AI has specialized knowledge in:
-
-### Research Co-Authorship
-
-- **Literature Research** — Systematic discovery, paper assessment, citation verification
-- **Field Expertise** — Domain knowledge, historical context, debates, connections to your argument
-- **Claims Verification** — Verifies claims against cited sources
-- **Argument Critique** — Adversarial reviewer simulation
-- **Writing Partnership** — Paragraph-level co-writing with margin notes
-- **Citation Audit** — Cross-paper citation integrity, scope boundary enforcement
-
-### Publication
-
-- **Academic Venues** — arXiv, SSRN, AIES, AI & Society formatting and requirements
-- **LaTeX Conversion** — Markdown to LaTeX for submission
-- **Citation Management** — Reference formatting, bibliography generation
-
-## Key Locations
-
-| Content                    | Location                              |
-| -------------------------- | ------------------------------------- |
-| Paper briefs               | `workspaces/<project>/briefs/`        |
-| Literature assessments     | `workspaces/<project>/01-analysis/`   |
-| Decision records           | `workspaces/<project>/03-drafts/deliberation/` |
-| Draft versions             | `workspaces/<project>/03-drafts/versions/`     |
-| Validation reports         | `workspaces/<project>/04-validate/`   |
-| Journal entries            | `workspaces/<project>/journal/`       |
+Start with `/ws` to see current state, then `/analyze` if you have a brief ready.
