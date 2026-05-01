@@ -170,7 +170,7 @@ const timeout = setTimeout(() => {
 
 ### 10. New Rules MUST Follow the Rule-Authoring Meta-Rule
 
-Every new rule MUST pass the Loud/Linguistic/Layered test defined in `rules/rule-authoring.md`.
+Every new rule MUST pass the Loud/Linguistic/Layered test (MUST/MUST NOT modals, BLOCKED phrases for common rationalizations, DO/DO NOT examples, **Why:** lines, paths-scoping unless universal). The full meta-rule lives in atelier/.claude/rules/rule-authoring.md if available in this workspace.
 
 ```markdown
 # DO:
