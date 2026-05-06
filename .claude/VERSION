@@ -1,14 +1,24 @@
 {
-  "version": "1.2.1",
+  "version": "1.4.0",
   "type": "co-domain",
   "domain": "research",
   "description": "CO for Research (COR) — academic co-authorship methodology",
-  "released": "2026-04-29",
+  "released": "2026-05-06",
   "upstream": {
     "name": "atelier",
-    "version": "1.2.1"
+    "version": "1.4.0"
   },
   "changelog": [
+    {
+      "version": "1.4.0",
+      "date": "2026-05-06",
+      "summary": "Sync from atelier 1.4.0 — adopt cc-artifacts Rule 1b (skill description discipline) + audit-fixtures backfill (catches up missed 1.3.0 marker bump)",
+      "changes": [
+        "MODIFIED: rules/cc-artifacts.md — NEW Rule 1b (Skill Descriptions Under 200 Characters): keyword-dump pattern BLOCKED, 4 BLOCKED rationalizations, **Why** cites loom 2026-05-06 47-truncation evidence",
+        "NEW: audit-fixtures/frontmatter-lint/ — 4 fixture/expected pairs + README; satisfies cc-artifacts.md MUST §11; was missing from prior sync wave",
+        "NOTE: Marker version skips 1.3.0 because content was adopted in commit df5a966 without VERSION marker bump; this entry catches both rounds up"
+      ]
+    },
     {
       "version": "1.2.1",
       "date": "2026-04-29",
