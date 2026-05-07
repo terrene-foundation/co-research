@@ -1,14 +1,26 @@
 {
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "co-domain",
   "domain": "research",
   "description": "CO for Research (COR) — academic co-authorship methodology",
   "released": "2026-05-06",
   "upstream": {
     "name": "atelier",
-    "version": "1.4.0"
+    "version": "1.4.1"
   },
   "changelog": [
+    {
+      "version": "1.4.1",
+      "date": "2026-05-06",
+      "summary": "Sync from atelier 1.4.1 — per-type fixture sets for agent/skill/command frontmatter lints",
+      "changes": [
+        "NEW: audit-fixtures/agent-frontmatter-lint/ — 4 fixture/expected pairs + README",
+        "NEW: audit-fixtures/skill-frontmatter-lint/ — 4 fixture/expected pairs + README",
+        "NEW: audit-fixtures/command-frontmatter-lint/ — 4 fixture/expected pairs + README",
+        "NOTE: cc-audit.md kept domain-customized per Q4 of cc-audit-lint-extend-artifacts plan (downstream-customization preservation precedent from 1.4.0). Lint extension is available at atelier; this repo's customized cc-audit.md can backport when stabilized.",
+        "FOLLOW-UP: GH atelier#N tracks 6 in-the-wild allowed-tools: bugs in agents/research/ (lint output is the work spec)"
+      ]
+    },
     {
       "version": "1.4.0",
       "date": "2026-05-06",
