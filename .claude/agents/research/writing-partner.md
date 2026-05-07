@@ -2,7 +2,7 @@
 name: writing-partner
 description: "Academic writing partner. Use for drafting, revision, and prose quality improvement."
 model: opus
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

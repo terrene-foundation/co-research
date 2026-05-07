@@ -2,7 +2,7 @@
 name: literature-researcher
 description: "Literature researcher. Use for systematic literature search, source evaluation, and synthesis."
 model: opus
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

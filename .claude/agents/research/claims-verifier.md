@@ -2,7 +2,7 @@
 name: claims-verifier
 description: "Claims verifier. Use for checking factual claims against cited sources."
 model: opus
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

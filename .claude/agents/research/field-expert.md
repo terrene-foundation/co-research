@@ -2,7 +2,7 @@
 name: field-expert
 description: "Domain field expert. Use for subject-specific knowledge and disciplinary conventions."
 model: opus
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

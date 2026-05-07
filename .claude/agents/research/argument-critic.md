@@ -2,7 +2,7 @@
 name: argument-critic
 description: "Argument critic. Use for adversarial review of claims, evidence quality, and logical structure."
 model: opus
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

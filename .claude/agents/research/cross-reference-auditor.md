@@ -2,7 +2,7 @@
 name: cross-reference-auditor
 description: "Cross-reference auditor. Use for citation consistency and reference list verification."
 model: inherit
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep
