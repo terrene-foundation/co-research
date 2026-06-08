@@ -86,7 +86,7 @@ Improve agents in their canonical locations.
 
 Improve skills in their canonical locations.
 
-- Reference `.claude/guides/claude-code/06-the-skill-system.md` for skill format
+- Reference `.claude/skills/skill-authoring/SKILL.md` for skill format
 - Update the directory's `SKILL.md` entry point to reference new files
 - Skills must be detailed enough for agents to achieve situational awareness from them alone
 

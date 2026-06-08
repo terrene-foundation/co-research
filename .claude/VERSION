@@ -1,14 +1,32 @@
 {
-  "version": "1.5.0",
+  "version": "1.5.2",
   "type": "co-domain",
   "domain": "research",
   "description": "CO for Research (COR) — academic co-authorship methodology",
-  "released": "2026-06-06",
+  "released": "2026-06-08",
   "upstream": {
     "name": "atelier",
-    "version": "1.5.0"
+    "version": "1.5.2"
   },
   "changelog": [
+    {
+      "version": "1.5.2",
+      "date": "2026-06-08",
+      "summary": "Resync from atelier 1.5.2 (red-team-converged HEAD), mirroring the proven co-template playbook. Closes the pre-existing cc-artifact-patterns dangling ref, adopts the 1.5.1 rule splits (cc-enforcement, specs-delegation) + 1.5.1/1.5.2 independence/naming/de-vendor hardening, and removes the de-framework claude-code onboarding manual. Held cluster (trust-posture/hook-* / repo-scope-discipline / self-referential-codify / journal-author-discipline rules; hook-authoring + trust-posture skills; settings-manager agent; .claude/hooks/) stays ABSENT — co-research has no hook substrate.",
+      "changes": [
+        "ADDED RULES (6, from atelier verbatim): artifact-flow, cc-enforcement (the 1.5.1 split-out enforcement/audit half of cc-artifacts), domain-independence, independence, specs-delegation (the 1.5.1 split-out delegation half of specs-authority), terrene-naming.",
+        "UPDATED RULES (16, overwrite from atelier 1.5.2): autonomous-execution, cc-artifacts (now the 196-line authoring-limits half; §8-13 / MUST NOT §4-6 moved to cc-enforcement), execution-discipline, governed-throughput, multi-operator-coordination, no-stubs, probe-driven-verification, recommendation-quality, resolve-on-discovery, spec-accuracy, specs-authority (now the spec-lifecycle half), sweep-completeness, time-pressure-discipline, upstream-issue-hygiene, user-flow-validation, verify-resource-existence.",
+        "ADDED SKILL: cc-artifact-patterns/ (copied from atelier) — closes a confirmed pre-existing dangling ref: cc-artifacts.md cited skills/cc-artifact-patterns/ 2x (now lines resolve) while the skill was absent downstream.",
+        "GUIDES DELETED (14, de-framework): claude-code/00-12 (13 framework-specific onboarding files) + claude-code/CLAUDE.md — loom/Kailash USE-template onboarding manual that contradicts the agnostic-authority identity (atelier removed these at 1.5.1). The stale model-optimization 01-04 set was NOT present downstream (already replaced by 01-model-selection-by-task), so no model-optimization deletion needed.",
+        "GUIDES UPDATED (9, overwrite from atelier): claude-code/{13-agentic-architecture,14-tool-design-patterns,15-prompt-engineering,16-context-reliability,README}, deterministic-quality/04-parallel-agent-bundles, model-optimization/01-model-selection-by-task, portability/{01-artifact-neutrality,02-multi-target-parity}.",
+        "GUIDES ADDED (13, atelier-only): co-setup/{01-architecture,02-project-types,03-creating-components,04-propagation,05-conversion,09-proposal-protocol,README} (roster trimmed to what co-research ships); deterministic-quality/{01-rule-authoring-principles,02-session-architecture,03-enforcement-ladder,README}; model-optimization/README; portability/README.",
+        "GUIDES PRESERVED: conversion/ (4 domain-specific files) untouched.",
+        "SCRUBS (held-item refs the copy dragged in): cc-enforcement.md — removed the hook-output-discipline.md Cross-References bullet; claude-code/README.md — dropped the skills/hook-authoring/ bullet; claude-code/13-agentic-architecture.md — redirected the hook-authoring skill link to rules/cc-enforcement.md; portability/01-artifact-neutrality.md — removed the hook-authoring SKILL parenthetical; portability/02-multi-target-parity.md — redirected the hook-authoring SKILL bullet to rules/cc-enforcement.md; co-setup/01-architecture.md + 02-project-types.md — trimmed the atelier-authority roster (co-expert, analyst, settings-manager, atelier-broker-model) and the held-hooks row to match what co-research actually ships (kept intermediate-reviewer, which co-research does ship).",
+        "HELD (still ABSENT, not synced — require a hook substrate co-research lacks): rules trust-posture / hook-output-discipline / repo-scope-discipline / self-referential-codify / journal-author-discipline; skills hook-authoring / trust-posture; agent management/settings-manager; all .claude/hooks/. The 03-creating-components.md generic hook-authoring teaching example (settings.json snippet) is preserved verbatim per the co-template playbook (teaching content, not a ref to a held atelier artifact).",
+        "PRESERVED (domain-specific, untouched): rules academic-writing-style, agents, arxiv-submission, deliberation-records, publication-claims, publication-quality, research-integrity, research-teaching, security; skills 30-arxiv-submission, 37-academic-voice, 38-research-co-authorship; agents/research/* + deep-analyst, requirements-analyst, security-reviewer; all commands, CLAUDE.md, settings files, .claude/learning/.",
+        "VALIDATION: 0 dangling refs to held rules/skills/agents/hooks (outside this changelog) and 0 refs to deleted guides; cc-artifact-patterns now resolves. Held cluster confirmed absent."
+      ]
+    },
     {
       "version": "1.5.0",
       "date": "2026-06-06",
