@@ -128,4 +128,3 @@ Per `/vet`'s convergence criteria (see the Convergence Criteria section in `comm
 ## Skill References
 
 - `skills/co-reference/` — CO methodology reference for verifying methodology claims
-- `skills/atelier-broker-model/` — Atelier's role across methodology source and downstream (when reviewing cross-repo impact claims)
