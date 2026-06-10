@@ -1,14 +1,24 @@
 {
-  "version": "1.5.3",
+  "version": "1.5.4",
   "type": "co-domain",
   "domain": "research",
   "description": "CO for Research (COR) — academic co-authorship methodology",
-  "released": "2026-06-09",
+  "released": "2026-06-10",
   "upstream": {
     "name": "atelier",
     "version": "1.5.3"
   },
   "changelog": [
+    {
+      "version": "1.5.4",
+      "date": "2026-06-10",
+      "summary": "SYNC-004 Part B downstream cleanup (operator-authorized; atelier workspace sync-hub-reference-curation journal/0005-0010): re-scope the wrongly-atelier-addressed rules to this repository's vantage. domain-independence.md KEPT and re-scoped to the inherited methodology layer (its MUST §1 is cited here as a load-bearing invariant — removal would orphan those references); Template-Placeholders directive adapted to the leaf vantage (inherited placeholders = unfilled configuration); no-stubs.md + terrene-naming.md + independence.md fully generalized — every atelier-self reference outside Origin: lines now reads from this repo's vantage. independence.md #4 preserves 'one implementation among possible others'; #5's gold-standards-validator citation kept (agent present here).",
+      "changes": [
+        "domain-independence.md: scope re-addressed to 'the inherited CC/CO methodology artifacts in this repository'; paths: trimmed to .claude/**; §2 adapted to leaf vantage (fill inherited placeholders); §3 phase-table prose de-self-referenced",
+        "independence.md + no-stubs.md + terrene-naming.md: adopted the generalized forms (scope lines, directive headlines, DO/DO-NOT examples, Why lines)",
+        "VERIFIED: grep -in atelier on all four files returns Origin: lines only; inbound references to domain-independence resolve"
+      ]
+    },
     {
       "version": "1.5.3",
       "date": "2026-06-09",
