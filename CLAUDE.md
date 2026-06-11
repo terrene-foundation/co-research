@@ -85,6 +85,8 @@ When you discover a missing analysis, literature note, decision record, or journ
 | `/publish`        | 06 Deliver | Prepare and ship for venue-specific submission                                    |
 | `/ws`             | --         | Workspace status dashboard                                                        |
 | `/wrapup`         | --         | Save session notes for continuity                                                 |
+| `/autonomize`     | --         | Adopt autonomous execution posture for the rest of the session                    |
+| `/sweep`          | --         | Repo-wide outstanding-work audit before `/wrapup`                                 |
 
 ## COR Workflow (6 Phases)
 
