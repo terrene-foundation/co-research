@@ -27,6 +27,10 @@ Create entries for anything missing, then proceed to write session notes.
    - **Next steps**: Describe what will happen next session in terms of outcomes
    - **Active todo**: Which todo was being worked on (for the AI's context restoration)
 
+3. Keep it concise (under 30 lines plus the ledger). This file is read by the next session's startup to restore context.
+
+4. Overwrite any existing `.session-notes` — only the latest matters. The ledger section is reconciled (carried forward by ID), never dropped by the overwrite.
+
 ### Outstanding Ledger — the Forest (cumulative)
 
 The `.session-notes` MUST also carry the running forest: every open forest-level workstream or blocked-item, NOT itemized todos (those live in the workspace `todos/`). It is carried forward each session so the next session inherits its bearings instead of re-deriving them from memory. Each row carries a short single-token (whitespace-free), UNIQUE, STABLE **ID** (`F1`, `F2`, … — never reused, never renamed) plus a **value-anchor**: why the item matters, citing a user-anchored source (the workspace `briefs/`, a `specs/` section, a journal DECISION entry, or a literal user quote).
@@ -53,7 +57,3 @@ Reconcile the ledger against the prior `.session-notes` on every wrapup:
 4. **Empty forest** still writes the sentinel. The sentinel and open rows are mutually exclusive — asserting "Forest empty" with rows present is a defect.
 
 **Why**: Reconciliation converts a per-session note into a durable forest record. Closing only by ID-with-receipt makes "done" auditable rather than asserted, and the no-silent-vanish rule guarantees a workstream cannot be lost simply because a session forgot to mention it. The ledger is forest-level only (workstreams and blocked-items, typically 2–6 rows) — itemizing individual todos here defeats the forest-vs-trees purpose.
-
-3. Keep it concise (under 30 lines plus the ledger). This file is read by the next session's startup to restore context.
-
-4. Overwrite any existing `.session-notes` — only the latest matters. The ledger section is reconciled (carried forward by ID), never dropped by the overwrite.

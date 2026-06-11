@@ -35,9 +35,9 @@ A missing directory is NOT a failure — it is a signal that the matching phase 
 
 ### Summary
 
-1. List contents of each phase directory (01-analyze, 02-plan, 03-execute, 04-vet, 05-codify, 06-deliver)
+1. List contents of each contract directory (01-analyze, 03-drafts, 04-validate, briefs, craft-notes, journal, todos)
 2. Count completed vs active todos
 3. Check for .session-notes
-4. Report the current phase based on which of the six directories have content
+4. Report the current phase based on which of the contract directories have content
 
 Present as a clear status dashboard.
