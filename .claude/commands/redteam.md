@@ -21,7 +21,7 @@ Review the findings and decide which issues matter. Results will be presented as
 ## Phase Check
 
 - Verify `todos/active/` is empty (all implemented) or note remaining items
-- Read `workspaces/<project>/03-user-flows/` for validation criteria if they exist
+- Read `workspaces/<project>/03-drafts/` for validation criteria if they exist
 - Validation results go into `workspaces/<project>/04-validate/`
 - If gaps are found, document them and feed back to implementation (use `/implement` to fix)
 
@@ -29,7 +29,7 @@ Review the findings and decide which issues matter. Results will be presented as
 
 ### 1. Spec coverage audit (MUST run first)
 
-Walk `workspaces/<project>/briefs/` → `specs/_index.md` → relevant spec files → `02-plans/` → artifacts produced during `/implement` and verify that EVERY specified item was actually built — not just exists. **Specs are the PRIMARY source** — they contain the detailed thesis, methodology, and claim-to-evidence mapping that the brief only summarizes. For each spec file, extract assertions at field level and verify against the actual artifacts. Artifact diverging from spec without logged deviation = HIGH. Produce `04-validate/.spec-coverage` as a table mapping brief item → spec file → todo → artifact → status. **Existence is NOT fulfillment.**
+Walk `workspaces/<project>/briefs/` → `specs/_index.md` → relevant spec files → `01-analyze/` → artifacts produced during `/implement` and verify that EVERY specified item was actually built — not just exists. **Specs are the PRIMARY source** — they contain the detailed thesis, methodology, and claim-to-evidence mapping that the brief only summarizes. For each spec file, extract assertions at field level and verify against the actual artifacts. Artifact diverging from spec without logged deviation = HIGH. Produce `04-validate/.spec-coverage` as a table mapping brief item → spec file → todo → artifact → status. **Existence is NOT fulfillment.**
 
 ### 2. Document consistency audit
 

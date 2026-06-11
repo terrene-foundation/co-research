@@ -20,11 +20,11 @@ Your role is to answer questions when decisions come up — these will always be
 
 ## Phase Check
 
-- Read files in `workspaces/<project>/co-research:todos/active/` to see what needs doing
-- Read files in `workspaces/<project>/co-research:todos/completed/` to see what's done
+- Read files in `workspaces/<project>/todos/active/` to see what needs doing
+- Read files in `workspaces/<project>/todos/completed/` to see what's done
 - If `$ARGUMENTS` specifies a specific todo, focus on that one
 - Otherwise, pick the next active todo
-- Reference plans in `workspaces/<project>/02-plans/` for context
+- Reference plans in `workspaces/<project>/01-analyze/` for context
 
 ## Workflow
 

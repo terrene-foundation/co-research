@@ -24,7 +24,7 @@ Your role is to answer questions when decisions come up — these will always be
 - Read files in `workspaces/<project>/todos/completed/` to see what's done
 - If `$ARGUMENTS` specifies a specific todo, focus on that one
 - Otherwise, pick the next active todo
-- Reference plans in `workspaces/<project>/02-plans/` for context
+- Reference plans in `workspaces/<project>/01-analyze/` for context
 
 ## Workflow
 
