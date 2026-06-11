@@ -30,6 +30,12 @@ Before extracting new knowledge, integrate what the learning system has captured
 2. Read `.claude/learning/learning-codified.json` — what was previously codified (avoid re-processing)
 3. Read recent journal entries referenced in the digest (`decisions` array) — DECISION and DISCOVERY entries contain semantic context
 4. Read `.session-notes` — latest session accomplishments and outstanding items
+5. **Re-validate deferred items before sorting** (per `rules/value-prioritization.md` MUST §3). Findings carried forward from a prior session — items the digest, `.session-notes`, or journal marks as deferred, "carried-forward," or follow-up — MUST NOT be re-listed on faith. For each:
+   - **Has a value-anchor** (a recorded sentence stating WHY it delivers value to the user, citing the workspace `briefs/`, a journal `DECISION-` entry, an approved spec success criterion, or a literal user quote) → surface the anchor and ask "is this still your value?" before carrying it into the findings analysis.
+   - **Lacks a value-anchor** → surface "this deferred item lacks a value-anchor — what is its current value to you?" rather than re-listing it as a candidate.
+   - **Deferred ≥2 sessions ago without re-pickup** → trigger a "still wanted?" gate; do not auto-carry.
+
+   Silent inheritance of deferred findings across `/clear` is BLOCKED — an item with no current-value confirmation does not enter the findings analysis below.
 
 Analyze the digest for actionable findings:
 

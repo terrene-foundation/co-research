@@ -15,6 +15,26 @@ Check the current state of the active workspace.
 
 ## Dashboard
 
+### Missing-Phase Scan
+
+Run this BEFORE the dashboard summary. Check the resolved workspace against the canonical phase-dir contract from `workspaces/_template/`:
+
+```
+01-analyze  03-drafts  04-validate  briefs  craft-notes  journal/  todos/
+```
+
+For each contract directory that is absent, emit a flagged warning at the TOP of the output. Use the `!! MISSING:` prefix so it stays visually loud in a plain terminal:
+
+```
+!! MISSING: briefs       — no user brief; ask the user for the paper's brief before /teach
+!! MISSING: 03-drafts    — drafting not started; run /craft or /write-para
+!! MISSING: 04-validate  — drafts unvalidated; run /validate-claim and /challenge before /codify
+```
+
+A missing directory is NOT a failure — it is a signal that the matching phase has not run yet. The flag is advisory: name the absent directory, the phase likely skipped, and the recommended next step. Do not halt or modify anything.
+
+### Summary
+
 1. List contents of each phase directory (01-analyze, 02-plan, 03-execute, 04-vet, 05-codify, 06-deliver)
 2. Count completed vs active todos
 3. Check for .session-notes

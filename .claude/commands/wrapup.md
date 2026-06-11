@@ -27,6 +27,33 @@ Create entries for anything missing, then proceed to write session notes.
    - **Next steps**: Describe what will happen next session in terms of outcomes
    - **Active todo**: Which todo was being worked on (for the AI's context restoration)
 
-3. Keep it concise (under 30 lines). This file is read by the next session's startup to restore context.
+### Outstanding Ledger — the Forest (cumulative)
 
-4. Overwrite any existing `.session-notes` — only the latest matters.
+The `.session-notes` MUST also carry the running forest: every open forest-level workstream or blocked-item, NOT itemized todos (those live in the workspace `todos/`). It is carried forward each session so the next session inherits its bearings instead of re-deriving them from memory. Each row carries a short single-token (whitespace-free), UNIQUE, STABLE **ID** (`F1`, `F2`, … — never reused, never renamed) plus a **value-anchor**: why the item matters, citing a user-anchored source (the workspace `briefs/`, a `specs/` section, a journal DECISION entry, or a literal user quote).
+
+```markdown
+### Outstanding Ledger (forest)
+
+| ID  | Item         | Value-anchor (user-anchored source)                          | Status                            |
+| --- | ------------ | ------------------------------------------------------------ | --------------------------------- |
+| F1  | <workstream> | <why it matters — briefs/ / specs §X / journal DECISION>      | BLOCKED on X / queued / in-flight |
+
+Closed this session: `F2` → receipt `<PR #N / commit SHA / journal NNNN>`.
+```
+
+If the forest is empty, write the sentinel explicitly: "Forest empty — every item closed or externally blocked." NEVER omit this section. An absent ledger is indistinguishable from a forgotten one; absence is not done.
+
+### Ledger Reconciliation (every wrapup)
+
+Reconcile the ledger against the prior `.session-notes` on every wrapup:
+
+1. **Carry forward** every prior row whose work is not yet delivered, KEEPING ITS ID UNCHANGED. The item text MAY be reworded; the ID MUST NOT. A prior open ID silently disappearing is BLOCKED — that is the stale-snapshot trap.
+2. **Close with receipt** — for each item delivered this session, move it to the "Closed this session" line, referenced BY ITS ID, WITH a durable receipt (PR number, commit SHA, or journal entry NNNN). No ID or no receipt → it is NOT closed; carry it forward.
+3. **Grow** — add any new forest-level workstream or blocked-item with a FRESH UNIQUE ID and a value-anchor citing a user-anchored source. No value-anchor → request it from the user; do NOT invent one.
+4. **Empty forest** still writes the sentinel. The sentinel and open rows are mutually exclusive — asserting "Forest empty" with rows present is a defect.
+
+**Why**: Reconciliation converts a per-session note into a durable forest record. Closing only by ID-with-receipt makes "done" auditable rather than asserted, and the no-silent-vanish rule guarantees a workstream cannot be lost simply because a session forgot to mention it. The ledger is forest-level only (workstreams and blocked-items, typically 2–6 rows) — itemizing individual todos here defeats the forest-vs-trees purpose.
+
+3. Keep it concise (under 30 lines plus the ledger). This file is read by the next session's startup to restore context.
+
+4. Overwrite any existing `.session-notes` — only the latest matters. The ledger section is reconciled (carried forward by ID), never dropped by the overwrite.

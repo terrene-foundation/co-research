@@ -40,6 +40,10 @@ Document in detail in `workspaces/<project>/01-analysis/01-research`.
 
 Check alignment with existing project documentation, anchor documents, and any established standards or strategy documents relevant to this workspace.
 
+### 3a. Brief-claim verification (when the brief carries ≥3 discrete claims)
+
+When the brief or its source material carries **≥3 discrete claims** (counts, paths, named artifacts, root-cause or "X currently does Y" assertions), apply `rules/delegation-orchestration.md` §2 ("Parallel Brief-Claim Verification") — the canonical requirement, examples, and BLOCKED list: launch parallel verification agents, one per claim cluster, each independently re-reading every factual claim its cluster cites. Record each verdict (TRUE / FALSE / UNCLEAR + citation) in `01-analysis/`, then reconcile corrections into the analysis BEFORE plans are drafted in `02-plans/`, so planning sizes against verified reality. Single-agent analysis on a ≥3-claim brief is BLOCKED.
+
 ### 4. Document analysis and plans
 
 Document analysis in `workspaces/<project>/01-analysis/`, plans in `workspaces/<project>/02-plans/`.
