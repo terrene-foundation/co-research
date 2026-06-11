@@ -10,7 +10,7 @@ Display the current workspace status in plain language. Do not modify any files.
 2. For the most recently modified workspace (or `$ARGUMENTS` if specified):
    - Show workspace name and path
    - Derive current phase and present using plain-language descriptions:
-     - Has `01-analysis/` files → "Research and planning completed"
+     - Has `01-analyze/` files → "Research and planning completed"
      - Has `todos/active/` files → "Project roadmap created — ready for your review"
      - Has `todos/completed/` files → "Building in progress" + progress summary
      - Has `04-validate/` files → "Testing completed — results ready for your review"

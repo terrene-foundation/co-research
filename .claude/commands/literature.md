@@ -15,7 +15,7 @@ Review the papers found and decide which ones to include in your working bibliog
 
 1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
 2. Otherwise, use the most recently modified directory under `workspaces/`
-3. Store results in `workspaces/<project>/01-analysis/literature/`
+3. Store results in `workspaces/<project>/01-analyze/literature/`
 
 ## Workflow
 
@@ -58,7 +58,7 @@ Flag topics where no papers were found but reviewers would expect coverage. "You
 
 ### 5. Store results
 
-Save in `workspaces/<project>/01-analysis/literature/<search-slug>.md`.
+Save in `workspaces/<project>/01-analyze/literature/<search-slug>.md`.
 
 ### 6. Journal findings
 

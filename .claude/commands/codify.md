@@ -14,7 +14,7 @@ description: "Load phase 05 (codify) for the current workspace. Update existing 
 
 - Read `workspaces/<project>/04-validate/` to confirm validation passed
 - Read `docs/` and `docs/00-authority/` for knowledge base
-- Output: update existing agents and skills in their canonical locations (e.g., `agents/frameworks/`, `skills/01-core-sdk/`, `skills/02-dataflow/`, etc.)
+- Output: update existing agents and skills in their canonical locations (e.g., `agents/research/`, `agents/management/`, `skills/`)
 
 ## Execution Model
 
@@ -30,6 +30,12 @@ Before extracting new knowledge, integrate what the learning system has captured
 2. Read `.claude/learning/learning-codified.json` — what was previously codified (avoid re-processing)
 3. Read recent journal entries referenced in the digest (`decisions` array) — DECISION and DISCOVERY entries contain semantic context
 4. Read `.session-notes` — latest session accomplishments and outstanding items
+5. **Re-validate deferred items before sorting** (per `rules/value-prioritization.md` MUST §3). Findings carried forward from a prior session — items the digest, `.session-notes`, or journal marks as deferred, "carried-forward," or follow-up — MUST NOT be re-listed on faith. For each:
+   - **Has a value-anchor** (a recorded sentence stating WHY it delivers value to the user, citing the workspace `briefs/`, a journal `DECISION-` entry, an approved spec success criterion, or a literal user quote) → surface the anchor and ask "is this still your value?" before carrying it into the findings analysis.
+   - **Lacks a value-anchor** → surface "this deferred item lacks a value-anchor — what is its current value to you?" rather than re-listing it as a candidate.
+   - **Deferred ≥2 sessions ago without re-pickup** → trigger a "still wanted?" gate; do not auto-carry.
+
+   Silent inheritance of deferred findings across `/clear` is BLOCKED — an item with no current-value confirmation does not enter the findings analysis below.
 
 Analyze the digest for actionable findings:
 
@@ -98,84 +104,25 @@ Ensure user-facing documentation reflects new capabilities. Verify README.md, do
 
 Validate that generated agents and skills are correct, complete, and secure. **claude-code-architect** verifies cc-artifacts compliance (descriptions under 120 chars, agents under 400 lines, commands under 150 lines, rules path-scoped, SKILL.md progressive disclosure).
 
-### 7. Create upstream proposal (BUILD repos only)
-
-**This step applies ONLY to BUILD repos** (kailash-py, kailash-rs). Detect by checking:
-
-- Git remote contains `kailash-py` or `kailash-rs`, OR
-- `pyproject.toml` contains `name = "kailash"` or `Cargo.toml` contains `name = "kailash"`
-
-**If this is a downstream project repo** (anything else): SKIP this step. Downstream repos consume COC artifacts from templates — they do not propose changes upstream. Artifact changes from `/codify` in downstream repos stay local to that project. Report:
-
-> Artifacts updated locally. This is a downstream project repo — changes stay local.
-> Only BUILD repos (kailash-py, kailash-rs) create upstream proposals.
-
-**If this is a BUILD repo**: Create a proposal for upstream review at loom/ (source of truth).
-
-**DO NOT sync directly to COC template repos.** All distribution flows through loom/ via `/sync`.
-
-1. Create `.claude/.proposals/` directory if it doesn't exist
-2. Read the SDK version from `pyproject.toml` (py) or `Cargo.toml` (rs) and the COC artifact version from `.claude/VERSION`
-3. Generate `.claude/.proposals/latest.yaml` listing all artifact changes:
-
-```yaml
-source_repo: kailash-py # or kailash-rs
-codify_date: YYYY-MM-DD
-codify_session: "type(scope): description of work"
-sdk_version: "2.2.1" # from pyproject.toml or Cargo.toml
-coc_version: "1.0.0" # from .claude/VERSION
-
-changes:
-  - file: relative/path/to/artifact.md
-    action: created | modified
-    suggested_tier: cc | co | coc | coc-py | coc-rs
-    reason: "Why this artifact was created/changed"
-    diff_lines: "+N -N" # for modifications
-
-status: pending_review
-```
-
-4. For each changed artifact, suggest a tier:
-   - **cc**: Claude Code universal (guides, cc-audit)
-   - **co**: Methodology universal (CO principles, journal, communication)
-   - **coc**: Codegen, language-agnostic (workflow phases, analysis patterns)
-   - **coc-py** / **coc-rs**: Language-specific (code examples, SDK patterns)
-
-5. Report to the developer:
-
-> Artifacts updated locally and available in this repo. Proposal created at
-> `.claude/.proposals/latest.yaml` with {N} changes for upstream review.
-> When ready, open loom/ and run `/sync {py|rs}` to classify and distribute.
-
-See `rules/artifact-flow.md` for the full flow rules.
-
 ## Agent Teams
 
 Deploy these agents as a team for codification:
 
 **Knowledge extraction team:**
 
-- **analyst** — Identify core patterns, architectural decisions, and domain knowledge worth capturing
-- **analyst** — Distill requirements into reusable agent instructions
-- `co-reference` skill — Ensure agents and skills follow COC five-layer architecture (codification IS Layer 5 evolution)
+- **deep-analyst** — Identify core patterns, architectural decisions, and domain knowledge worth capturing
+- **requirements-analyst** — Distill requirements into reusable agent instructions
+- `co-reference` skill — Ensure agents and skills follow the CO five-layer architecture (codification IS Layer 5 evolution)
 
 **Creation team:**
 
-- **reviewer** — Validate that skill examples are correct and runnable
-- **reviewer** — Review agent/skill quality before finalizing
+- **intermediate-reviewer** — Validate that skill examples are correct and runnable; review agent/skill quality before finalizing
 
 **Validation team (red team the agents and skills):**
 
 - **claude-code-architect** — Verify cc-artifacts compliance: descriptions <120 chars, agents <400 lines, commands <150 lines, rules have `paths:` frontmatter, SKILL.md progressive disclosure, no CLAUDE.md duplication
 - **gold-standards-validator** — Terrene naming, licensing accuracy, terminology standards
-- **testing-specialist** — Verify any code examples in skills are testable
 - **security-reviewer** — Audit agents/skills for prompt injection, insecure patterns, secrets exposure
-
-**Upstream proposal (step 7 — BUILD repos only):**
-
-- Only in BUILD repos (kailash-py, kailash-rs): generate `.claude/.proposals/latest.yaml` with tier suggestions
-- Downstream project repos: skip proposal creation, changes stay local
-- See `rules/artifact-flow.md` for the controlled flow: BUILD repo → loom/ → templates
 
 ### Journal
 

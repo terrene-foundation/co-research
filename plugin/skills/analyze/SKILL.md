@@ -20,7 +20,7 @@ Review our research findings and confirm we understood your intent. You'll see a
 
 ## Phase Check
 
-- Output goes into `workspaces/<project>/01-analysis/`, `workspaces/<project>/02-plans/`, and `workspaces/<project>/03-user-flows/`
+- Output goes into `workspaces/<project>/01-analyze/`, `workspaces/<project>/02-plans/`, and `workspaces/<project>/03-user-flows/`
 
 ## Workflow
 
@@ -30,7 +30,7 @@ Read the brief and any related existing documents in the knowledge base. Underst
 
 ### 2. Research thoroughly
 
-Document in detail in `workspaces/<project>/01-analysis/01-research`.
+Document in detail in `workspaces/<project>/01-analyze/01-research`.
 
 - Use as many subdirectories and files as required
 - Name them sequentially as 01-, 02-, etc, for easy referencing
@@ -42,7 +42,7 @@ Check alignment with existing project documentation, anchor documents, and any e
 
 ### 4. Document analysis and plans
 
-Document analysis in `workspaces/<project>/01-analysis/`, plans in `workspaces/<project>/02-plans/`.
+Document analysis in `workspaces/<project>/01-analyze/`, plans in `workspaces/<project>/02-plans/`.
 
 - Use as many subdirectories and files as required
 - Name them sequentially as 01-, 02-, etc, for easy referencing

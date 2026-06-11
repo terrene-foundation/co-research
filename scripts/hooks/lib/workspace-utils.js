@@ -49,7 +49,7 @@ function detectActiveWorkspace(cwd) {
  * - Has 04-validate/ with files -> phase 04-validate
  * - Has 03-drafts/ with files -> phase 03-drafts
  * - Has 02-plans/ or deliberation records -> phase 02-deliberate
- * - Has 01-analysis/ with files -> phase 01-analyze
+ * - Has 01-analyze/ with files -> phase 01-analyze
  * - Empty workspace -> not-started
  *
  * @param {string} workspacePath - Absolute path to workspace directory
@@ -84,7 +84,7 @@ function derivePhase(workspacePath, cwd) {
   }
 
   // Check for analysis artifacts (phase 01)
-  if (dirHasFiles(path.join(workspacePath, "01-analysis"))) {
+  if (dirHasFiles(path.join(workspacePath, "01-analyze"))) {
     return "01-analyze";
   }
 

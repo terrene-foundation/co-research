@@ -145,7 +145,7 @@ Each paper gets its own workspace:
 ```
 workspaces/my-paper/
   briefs/               # Paper scope, objectives, venue targets
-  01-analysis/
+  01-analyze/
     literature/         # Literature notes and paper assessments
   03-drafts/
     deliberation/
