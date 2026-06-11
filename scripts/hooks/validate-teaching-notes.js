@@ -10,7 +10,7 @@
  *   - Year validation for cited works
  *
  * Runs on Edit|Write operations that touch:
- *   workspaces/<paper>/01-analysis/literature/
+ *   workspaces/<paper>/01-analyze/literature/
  */
 
 const fs = require("fs");
@@ -21,7 +21,7 @@ async function main() {
   const toolInput = input.tool_input || {};
   const filePath = toolInput.file_path || "";
 
-  if (!filePath.includes("01-analysis/literature/")) {
+  if (!filePath.includes("01-analyze/literature/")) {
     process.exit(0);
   }
 

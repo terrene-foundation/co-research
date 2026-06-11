@@ -115,7 +115,7 @@ The AI has specialized knowledge in:
 | Content                    | Location                              |
 | -------------------------- | ------------------------------------- |
 | Paper briefs               | `workspaces/<project>/briefs/`        |
-| Literature assessments     | `workspaces/<project>/01-analysis/`   |
+| Literature assessments     | `workspaces/<project>/01-analyze/`   |
 | Decision records           | `workspaces/<project>/03-drafts/deliberation/` |
 | Draft versions             | `workspaces/<project>/03-drafts/versions/`     |
 | Validation reports         | `workspaces/<project>/04-validate/`   |

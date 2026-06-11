@@ -23,7 +23,7 @@ cd test-cor-e2e
 ```
 
 **Verify**:
-- [ ] `workspaces/_template/` exists with subdirectories: `01-analysis/literature/`, `03-drafts/deliberation/decisions/`, `03-drafts/versions/`, `04-validate/reviews/`, `briefs/`, `craft-notes/`, `journal/`, `todos/active/`, `todos/completed/`
+- [ ] `workspaces/_template/` exists with subdirectories: `01-analyze/literature/`, `03-drafts/deliberation/decisions/`, `03-drafts/versions/`, `04-validate/reviews/`, `briefs/`, `craft-notes/`, `journal/`, `todos/active/`, `todos/completed/`
 - [ ] `plugin/CLAUDE.md` exists and lists 14 skills
 - [ ] `plugin/agents/research/` contains 6 agent `.md` files
 - [ ] `plugin/agents/management/` contains 2 agent `.md` files
@@ -206,7 +206,7 @@ This is a new project. I'm starting fresh. The venue is arXiv (cs.CY) as a worki
 - [ ] Output includes a **Themes** section synthesizing across papers
 - [ ] Output includes a **Gaps** section identifying what the literature does not address
 - [ ] Output includes a **Reviewer Expectations** section
-- [ ] A literature assessment file is created at `workspaces/foundation-capture/01-analysis/literature/nonprofit-foundation-governance.md` (or similar)
+- [ ] A literature assessment file is created at `workspaces/foundation-capture/01-analyze/literature/nonprofit-foundation-governance.md` (or similar)
 - [ ] A journal entry is created: `0003-LITERATURE-nonprofit-foundation-governance.md`
 
 **Pass criteria**:
@@ -838,7 +838,7 @@ Track which workspace artifacts are created during the full test run:
 | TEACH journal entry 1 | `journal/0001-TEACH-*.md` | | |
 | TEACH journal entry 2 | `journal/0002-TEACH-*.md` | | |
 | LITERATURE journal entry | `journal/0003-LITERATURE-*.md` | | |
-| Literature assessment | `01-analysis/literature/*.md` | | |
+| Literature assessment | `01-analyze/literature/*.md` | | |
 | DELIBERATION journal entry 1 | `journal/0004-DELIBERATION-*.md` | | |
 | Decision record 1 | `03-drafts/deliberation/decisions/0001-*.md` | | |
 | DELIBERATION journal entry 2 | `journal/0005-DELIBERATION-*.md` | | |

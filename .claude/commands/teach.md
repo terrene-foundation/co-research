@@ -15,7 +15,7 @@ Listen, ask questions, push back. This is a teaching conversation — if somethi
 
 1. If `$ARGUMENTS` specifies a workspace, use `workspaces/$ARGUMENTS/`
 2. Otherwise, use the most recently modified directory under `workspaces/`
-3. Store teaching notes in `workspaces/<project>/01-analysis/literature/`
+3. Store teaching notes in `workspaces/<project>/01-analyze/literature/`
 
 ## Workflow
 
@@ -40,7 +40,7 @@ Delegate to **literature-researcher** to find the primary source and key seconda
 
 ### 4. Store teaching notes
 
-Save a structured note in `workspaces/<project>/01-analysis/literature/<topic-slug>.md` containing:
+Save a structured note in `workspaces/<project>/01-analyze/literature/<topic-slug>.md` containing:
 
 - The concept explained
 - Key citations with verification status
