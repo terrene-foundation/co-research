@@ -13,7 +13,7 @@ description: "Load phase 05 (codify) for the current workspace. Update existing 
 ## Phase Check
 
 - Read `workspaces/<project>/04-validate/` to confirm validation passed
-- Read `docs/` and `docs/00-authority/` for knowledge base
+- Read `docs/` for knowledge base
 - Output: update existing agents and skills in their canonical locations (e.g., `agents/research/`, `agents/management/`, `skills/`)
 
 ## Execution Model
@@ -58,7 +58,7 @@ After processing, write `.claude/learning/learning-codified.json` to record what
   "last_codified": "2026-04-07T12:00:00Z",
   "digest_hash": "<sha256 of digest at time of processing>",
   "actions_taken": [
-    { "type": "rule_update", "file": "rules/patterns.md", "reason": "..." },
+    { "type": "rule_update", "file": "rules/research-integrity.md", "reason": "..." },
     {
       "type": "skill_update",
       "file": "skills/03-nexus/SKILL.md",
@@ -72,7 +72,7 @@ This closes the feedback loop: observe → digest → **codify into real artifac
 
 ### 2. Deep knowledge extraction
 
-Using as many subagents as required, peruse `docs/`, especially `docs/00-authority/`.
+Using as many subagents as required, peruse `docs/`.
 
 - Read beyond the docs into the intent of this project/product
 - Understand the roles and use of agents, skills, docs:
