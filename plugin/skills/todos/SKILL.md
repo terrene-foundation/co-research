@@ -20,15 +20,15 @@ Review and approve the roadmap before work starts. This is your most important c
 
 ## Phase Check
 
-- Read files in `workspaces/<project>/02-plans/` for context
+- Read files in `workspaces/<project>/01-analyze/` for context
 - Check if `todos/active/` already has files (resuming)
-- All todos go into `workspaces/<project>/co-research:todos/active/`
+- All todos go into `workspaces/<project>/todos/active/`
 
 ## Workflow
 
 ### 1. Review plans with specialists
 
-Reference plans in `workspaces/<project>/02-plans/` and work through every file.
+Reference plans in `workspaces/<project>/01-analyze/` and work through every file.
 
 - Consult relevant domain experts for specialized work
 - Ensure cross-references and dependencies are mapped

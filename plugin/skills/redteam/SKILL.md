@@ -21,7 +21,7 @@ Review the findings and decide which issues matter. Results will be presented as
 ## Phase Check
 
 - Verify `todos/active/` is empty (all implemented) or note remaining items
-- Read `workspaces/<project>/03-user-flows/` for validation criteria if they exist
+- Read `workspaces/<project>/03-drafts/` for validation criteria if they exist
 - Validation results go into `workspaces/<project>/04-validate/`
 - If gaps are found, document them and feed back to implementation (use `/co-research:implement` to fix)
 
